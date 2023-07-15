@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "removeComments": true,
+    "target": "ES2019",
+    "moduleResolution": "Node",
+    "sourceMap": true,
+    "outDir": "dist",
+    "incremental": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@domain/*": ["./src/domain/*"],
+      "@application/*": ["./src/application/*"],
+      "@utils/*": ["./src/utils/*"]
+    }
+  }
+}
