@@ -13,6 +13,14 @@ export class Email {
   }
 
   static validate(email: string): boolean {
-    return !!email;
+    if (!email) {
+      return false;
+    }
+
+    const emailRegExp = new RegExp(
+      /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
+    );
+
+    return emailRegExp.test(email);
   }
 }
