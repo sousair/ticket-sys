@@ -13,5 +13,17 @@ describe('Email Entity', () => {
 
       expect(result).toStrictEqual(false);
     });
+
+    it('should return false when a invalid email is sent', () => {
+      const result = Email.validate('invalidEmail');
+
+      expect(result).toStrictEqual(false);
+    });
+
+    it('should return true when a valid email is sent', () => {
+      const result = Email.validate('validEmail@domain.com');
+
+      expect(result).toStrictEqual(true);
+    });
   });
 });
