@@ -1,5 +1,5 @@
 import { InvalidEmailError } from '@domain/errors/invalid-email';
-import { Either, success } from '@utils/either';
+import { Either, failure, success } from '@utils/either';
 
 export class Email {
   readonly value: string;
@@ -9,6 +9,10 @@ export class Email {
   }
 
   static create(email: string): Either<InvalidEmailError, Email> {
+    if (!Email.validate(email)) {
+      return failure(new InvalidEmailError());
+    }
+    
     return success(new Email(email));
   }
 
