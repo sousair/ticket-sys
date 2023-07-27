@@ -11,6 +11,7 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
+      "@entities/*": ["./src/domain/entities/*"],
       "@domain/*": ["./src/domain/*"],
       "@application/*": ["./src/application/*"],
       "@utils/*": ["./src/utils/*"]
