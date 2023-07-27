@@ -1,6 +1,6 @@
 import { InvalidEmailError } from '@domain/errors/invalid-email';
 import { Email } from '@entities/email';
-import { Failure } from '@utils/either';
+import { Failure, Success } from '@utils/either';
 
 describe('Email Entity', () => {
   describe('validate', () => {
@@ -35,6 +35,17 @@ describe('Email Entity', () => {
 
       expect(result).toBeInstanceOf(Failure);
       expect(result.value).toBeInstanceOf(InvalidEmailError);
+    });
+
+    it('should return a Success and Email value when a invalid email is sent', () => {
+      const result = Email.create('validEmail@domain.com');
+
+      expect(result).toBeInstanceOf(Success);
+      expect(result.value).toBeInstanceOf(Email);
+
+      const emailValue = (<Email>result.value).value;
+
+      expect(emailValue).toStrictEqual('validEmail@domain.com');
     });
   });
 });
