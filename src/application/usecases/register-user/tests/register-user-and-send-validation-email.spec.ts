@@ -1,9 +1,11 @@
+import { IEncrypterProvider } from '@application/adapters/providers/encrypter';
 import { IUserRepository } from '@application/adapters/repositories/user';
+import { InternalError } from '@application/errors/internal-error';
 import { UserAlreadyRegisteredError } from '@application/errors/user-already-registered';
 import { Email } from '@entities/email';
 import { User } from '@entities/user';
 import { UserPassword } from '@entities/user-password';
-import { Failure } from '@utils/either';
+import { Either, Failure, failure, success } from '@utils/either';
 import { IRegisterUser } from '../register-user';
 import { RegisterUserAndSendValidationEmail } from '../register-user-and-send-validation-email';
 
@@ -11,17 +13,27 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
   let validParams: IRegisterUser.Params;
 
   let sut: RegisterUserAndSendValidationEmail;
-  let userRepository: IUserRepository;
 
-  beforeAll(() => {
+  let userRepository: IUserRepository;
+  let encrypterProvider: IEncrypterProvider;
+
+  beforeEach(() => {
     class UserRepositoryStub implements IUserRepository {
       async findOneByEmail(): Promise<User> {
         return null;
       }
     }
 
+    class EncrypterProviderStub implements IEncrypterProvider {
+      encryptUserPassword(): Either<InternalError, string> {
+        return success('hashedPassword');
+      }
+    }
+
     userRepository = new UserRepositoryStub();
-    sut = new RegisterUserAndSendValidationEmail(userRepository);
+    encrypterProvider = new EncrypterProviderStub();
+
+    sut = new RegisterUserAndSendValidationEmail(userRepository, encrypterProvider);
 
     validParams = {
       email: new Email('validEmail@domain.com'),
@@ -31,6 +43,7 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
 
   it('should call UserRepository.findOneByEmail with correct values', async () => {
     const userRepositorySpy = jest.spyOn(userRepository, 'findOneByEmail');
+
     await sut.register(validParams);
 
     expect(userRepositorySpy).toHaveBeenCalledTimes(1);
@@ -44,5 +57,23 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
 
     expect(result).toBeInstanceOf(Failure);
     expect(result.value).toBeInstanceOf(UserAlreadyRegisteredError);
+  });
+
+  it('should call EncrypterProvider.encryptUserPassword with correct values', async () => {
+    const encrypterProviderSpy = jest.spyOn(encrypterProvider, 'encryptUserPassword');
+
+    await sut.register(validParams);
+
+    expect(encrypterProviderSpy).toHaveBeenCalledTimes(1);
+    expect(encrypterProviderSpy).toHaveBeenCalledWith(validParams.password.value);
+  });
+
+  it('should return a Failure and InternalError when EncrypterProvider.encryptUserPassword returns a Failure', async () => {
+    jest.spyOn(encrypterProvider, 'encryptUserPassword').mockReturnValueOnce(failure(new InternalError('failed to encrypt user password')));
+
+    const result = await sut.register(validParams);
+
+    expect(result).toBeInstanceOf(Failure);
+    expect(result.value).toBeInstanceOf(InternalError);
   });
 });
