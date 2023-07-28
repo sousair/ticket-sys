@@ -7,5 +7,11 @@ describe('User Entity', () => {
 
       expect(result).toStrictEqual(false);
     });
+
+    it('should return false when sent an empty object', () => {
+      const result = User.validate(<User>{});
+
+      expect(result).toStrictEqual(false);
+    });
   });
 });
