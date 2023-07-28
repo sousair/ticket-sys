@@ -1,6 +1,6 @@
-import { ApplicationError } from '@utils/custom-error';
+import { CustomError } from '@utils/custom-error';
 
-export class InvalidUserPasswordError extends ApplicationError {
+export class InvalidUserPasswordError extends CustomError {
   constructor() {
     super({
       name: 'InvalidUserPassword',
