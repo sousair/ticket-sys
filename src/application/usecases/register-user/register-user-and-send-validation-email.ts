@@ -57,6 +57,6 @@ export class RegisterUserAndSendValidationEmail implements IRegisterUser {
       email: user.email,
     });
 
-    return success(new User(undefined));
+    return success(user);
   }
 }
