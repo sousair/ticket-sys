@@ -5,12 +5,14 @@ import { UserAlreadyRegisteredError } from '@application/errors/user-already-reg
 import { User } from '@entities/user';
 import { failure, success } from '@utils/either';
 import { IRegisterUser } from './register-user';
+import { ISendValidationEmail } from '../send-validation-mail/send-validation-mail';
 
 export class RegisterUserAndSendValidationEmail implements IRegisterUser {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly encrypter: IEncrypterProvider,
     private readonly uniqueIDGenerator: IUniqueIDGeneratorProvider,
+    private readonly sendValidationEmail: ISendValidationEmail
   ) {}
 
   async register({ email, password }: IRegisterUser.Params): IRegisterUser.Result {
@@ -26,7 +28,7 @@ export class RegisterUserAndSendValidationEmail implements IRegisterUser {
       return failure(encrypterRes.value);
     }
 
-    const userId = this.uniqueIDGenerator.generate(); 
+    const userId = this.uniqueIDGenerator.generate();
 
     const createUserRes = User.create({
       id: userId,
@@ -38,7 +40,7 @@ export class RegisterUserAndSendValidationEmail implements IRegisterUser {
       deletedAt: null,
     });
 
-    if(createUserRes.isFailure()) {
+    if (createUserRes.isFailure()) {
       return failure(createUserRes.value);
     }
 
@@ -49,6 +51,11 @@ export class RegisterUserAndSendValidationEmail implements IRegisterUser {
     if (saveRes.isFailure()) {
       return failure(saveRes.value);
     }
+
+    this.sendValidationEmail.send({
+      id: user.id,
+      email: user.email,
+    });
 
     return success(new User(undefined));
   }
