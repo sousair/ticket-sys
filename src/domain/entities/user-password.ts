@@ -1,5 +1,5 @@
 import { InvalidUserPasswordError } from '@domain/errors/invalid-user-password';
-import { Either, success } from '@utils/either';
+import { Either, failure, success } from '@utils/either';
 
 export class UserPassword {
   readonly value: string;
@@ -9,6 +9,9 @@ export class UserPassword {
   }
 
   static create(password: string): Either<InvalidUserPasswordError, UserPassword> {
+    if (!UserPassword.validate(password)) {
+      return failure(new InvalidUserPasswordError());
+    }
     return success(new UserPassword(password));
   }
 
