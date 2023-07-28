@@ -28,6 +28,20 @@ export class RegisterUserAndSendValidationEmail implements IRegisterUser {
 
     const userId = this.uniqueIDGenerator.generate(); 
 
+    const createUserRes = User.create({
+      id: userId,
+      hashedPassword: encrypterRes.value,
+      email: email,
+      emailValidated: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      deletedAt: null,
+    });
+
+    if(createUserRes.isFailure()) {
+      return failure(createUserRes.value);
+    }
+
     return success(new User(undefined));
   }
 }
