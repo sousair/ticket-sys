@@ -21,6 +21,10 @@ export class User {
   }
 
   static validate(user: User): boolean {
+    if (!user) {
+      return false;
+    }
+
     return true;
   }
 }
