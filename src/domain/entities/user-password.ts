@@ -17,7 +17,7 @@ export class UserPassword {
       return false;
     }
 
-    const passwordRegExp = new RegExp(/^.{8,}$/);
+    const passwordRegExp = new RegExp(/^.{8,20}$/);
 
     return passwordRegExp.test(password);
   }
