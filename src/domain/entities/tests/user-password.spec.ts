@@ -13,5 +13,13 @@ describe('UserPassword Entity', () => {
 
       expect(result).toStrictEqual(false);
     });
+
+    it('should return false when sent a password without less than 8 characters', () => {
+      const invalidPassword = 'Inv4l!d';
+
+      const result = UserPassword.validate(invalidPassword);
+
+      expect(result).toStrictEqual(false);
+    });
   });
 });
