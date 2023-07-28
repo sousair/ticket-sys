@@ -24,6 +24,10 @@ export class User {
     if (!user) {
       return false;
     }
+    
+    if (!Object.keys(user).length) {
+      return false;
+    }
 
     return true;
   }
