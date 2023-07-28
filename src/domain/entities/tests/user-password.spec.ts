@@ -1,4 +1,6 @@
+import { InvalidUserPasswordError } from '@domain/errors/invalid-user-password';
 import { UserPassword } from '@entities/user-password';
+import { Failure, Success } from '@utils/either';
 
 describe('UserPassword Entity', () => {
   describe('validate', () => {
@@ -66,6 +68,26 @@ describe('UserPassword Entity', () => {
       const result = UserPassword.validate('v4l!dPass');
 
       expect(result).toStrictEqual(true);
+    });
+  });
+
+  describe('create', () => {
+    it('should return Failure and InvalidUserPasswordError value when a invalid password is sent', () => { 
+      const result = UserPassword.create('invalidPassword');
+
+      expect(result).toBeInstanceOf(Failure);
+      expect(result.value).toBeInstanceOf(InvalidUserPasswordError);
+    });
+
+    it('should return Success and UserPassword value when a valid password is sent', () => {
+      const result = UserPassword.create('v4l!dPass');
+
+      expect(result).toBeInstanceOf(Success);
+      expect(result.value).toBeInstanceOf(UserPassword);
+
+      const passwordValue = (<UserPassword>result.value).value;
+
+      expect(passwordValue).toStrictEqual('v4l!dPass');
     });
   });
 });
