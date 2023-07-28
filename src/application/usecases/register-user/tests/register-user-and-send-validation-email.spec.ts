@@ -26,11 +26,16 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
   const mockedGeneratedId = 'mockedId';
   const mockedHashedPassword = 'mockedHashedPassword';
 
+  let mockedUser: User;
 
   beforeEach(() => {
     class UserRepositoryStub implements IUserRepository {
       async findOneByEmail(): Promise<User> {
-        return null;
+        return Promise.resolve(null);
+      }
+
+      async save(): Promise<Either<InternalError, number>> {
+        return Promise.resolve(success(1));
       }
     }
 
@@ -55,6 +60,16 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
     validParams = {
       email: new Email('validEmail@domain.com'),
       password: new UserPassword('v4l!dPass'),
+    };
+
+    mockedUser = {
+      id: mockedGeneratedId,
+      hashedPassword: mockedHashedPassword,
+      email: validParams.email,
+      emailValidated: false,
+      createdAt: mockedDate,
+      updatedAt: mockedDate,
+      deletedAt: null,
     };
   });
 
@@ -108,15 +123,7 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
     await sut.register(validParams);
 
     expect(userCreateSpy).toHaveBeenCalledTimes(1);
-    expect(userCreateSpy).toHaveBeenCalledWith(<User>{
-      id: mockedGeneratedId,
-      hashedPassword: mockedHashedPassword,
-      email: validParams.email,
-      emailValidated: false,
-      createdAt: mockedDate,
-      updatedAt: mockedDate,
-      deletedAt: null,
-    });
+    expect(userCreateSpy).toHaveBeenCalledWith(mockedUser);
   });
 
   it('should return Failure and InvalidUserError when User.create returns a Failure and InvalidUserError', async () => {
@@ -126,5 +133,23 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
 
     expect(result).toBeInstanceOf(Failure);
     expect(result.value).toBeInstanceOf(InvalidUserError);
+  });
+
+  it('should call UserRepository.save with correct values', async () => {
+    const userRepositorySpy = jest.spyOn(userRepository, 'save');
+
+    await sut.register(validParams);
+
+    expect(userRepositorySpy).toHaveBeenCalledTimes(1);
+    expect(userRepositorySpy).toHaveBeenCalledWith(mockedUser);
+  });
+
+  it('should return Failure and InternalError when UserRepository.save returns Failure', async () => {
+    jest.spyOn(userRepository, 'save').mockResolvedValueOnce(failure(new InternalError('error saving user on db')));
+
+    const result = await sut.register(validParams);
+
+    expect(result).toBeInstanceOf(Failure);
+    expect(result.value).toBeInstanceOf(InternalError);
   });
 });
