@@ -29,5 +29,13 @@ describe('UserPassword Entity', () => {
 
       expect(result).toStrictEqual(false);
     });
+
+    it('should return false when sent a password without at least one upper case character', () => {
+      const invalidPassword = 'inv4l!dpass';
+
+      const result = UserPassword.validate(invalidPassword);
+
+      expect(result).toStrictEqual(false);
+    });
   });
 });
