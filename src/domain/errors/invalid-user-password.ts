@@ -1,10 +1,10 @@
 import { ApplicationError } from '@utils/custom-error';
 
 export class InvalidUserPasswordError extends ApplicationError {
-  constructor(message: string) {
+  constructor() {
     super({
       name: 'InvalidUserPassword',
-      message,
+      message: 'invalid user password',
     });
   }
 }
