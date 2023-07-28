@@ -1,6 +1,7 @@
+import { InvalidEmailError } from '@domain/errors/invalid-email';
 import { InvalidUserError } from '@domain/errors/invalid-user';
 import { Email } from '@entities/email';
-import { Either, success } from '@utils/either';
+import { Either, failure, success } from '@utils/either';
 
 export class User {
   id: string;
@@ -16,7 +17,13 @@ export class User {
     Object.assign(this, user);
   }
 
-  static create(user: User): Either<InvalidUserError, User> {
+  static create(user: User): Either<InvalidUserError | InvalidEmailError, User> {
+    const emailValid = Email.validate(user.email.value);
+    
+    if (!emailValid) {
+      return failure(new InvalidEmailError());
+    }
+
     return success(new User(user));
   }
 
