@@ -13,12 +13,12 @@ export class UserPassword {
   }
 
   static validate(password: string): boolean {
-    const passwordRegExp = new RegExp(/^.{8,}$/)
-
-    if (!passwordRegExp.test(password)) {
+    if (!password) {
       return false;
     }
-    
-    return !!password;
+
+    const passwordRegExp = new RegExp(/^.{8,}$/);
+
+    return passwordRegExp.test(password);
   }
 }
