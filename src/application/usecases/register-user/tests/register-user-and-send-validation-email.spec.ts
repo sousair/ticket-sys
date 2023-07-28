@@ -9,8 +9,12 @@ import { UserPassword } from '@entities/user-password';
 import { Either, Failure, failure, success } from '@utils/either';
 import { IRegisterUser } from '../register-user';
 import { RegisterUserAndSendValidationEmail } from '../register-user-and-send-validation-email';
+import { InvalidUserError } from '@domain/errors/invalid-user';
 
 describe('RegisterUserAndSendValidationEmail UseCase', () => {
+  const mockedDate = new Date();
+  jest.useFakeTimers().setSystemTime(mockedDate.getTime());
+
   let validParams: IRegisterUser.Params;
 
   let sut: RegisterUserAndSendValidationEmail;
@@ -18,6 +22,10 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
   let userRepository: IUserRepository;
   let encrypterProvider: IEncrypterProvider;
   let uniqueIDGeneratorProvider: IUniqueIDGeneratorProvider;
+
+  const mockedGeneratedId = 'mockedId';
+  const mockedHashedPassword = 'mockedHashedPassword';
+
 
   beforeEach(() => {
     class UserRepositoryStub implements IUserRepository {
@@ -28,13 +36,13 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
 
     class EncrypterProviderStub implements IEncrypterProvider {
       encryptUserPassword(): Either<InternalError, string> {
-        return success('hashedPassword');
+        return success(mockedHashedPassword);
       }
     }
 
     class UniqueIDGeneratorProviderStub implements IUniqueIDGeneratorProvider {
       generate(): string {
-        return 'id';
+        return mockedGeneratedId;
       }
     }
 
@@ -89,6 +97,34 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
   it('should call UniqueIDGeneratorProvider', async () => {
     const uniqueIDGeneratorProviderSpy = jest.spyOn(uniqueIDGeneratorProvider, 'generate');
 
+    await sut.register(validParams);
+
     expect(uniqueIDGeneratorProviderSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call User.create', async () => {
+    const userCreateSpy = jest.spyOn(User, 'create');
+
+    await sut.register(validParams);
+
+    expect(userCreateSpy).toHaveBeenCalledTimes(1);
+    expect(userCreateSpy).toHaveBeenCalledWith(<User>{
+      id: mockedGeneratedId,
+      hashedPassword: mockedHashedPassword,
+      email: validParams.email,
+      emailValidated: false,
+      createdAt: mockedDate,
+      updatedAt: mockedDate,
+      deletedAt: null,
+    });
+  });
+
+  it('should return Failure and InvalidUserError when User.create returns a Failure and InvalidUserError', async () => {
+    jest.spyOn(User, 'create').mockReturnValueOnce(failure(new InvalidUserError()));
+
+    const result = await sut.register(validParams);
+
+    expect(result).toBeInstanceOf(Failure);
+    expect(result.value).toBeInstanceOf(InvalidUserError);
   });
 });
