@@ -1,4 +1,5 @@
 import { InvalidEmailError } from '@domain/errors/invalid-email';
+import { InvalidUserError } from '@domain/errors/invalid-user';
 import { Email } from '@entities/email';
 import { User } from '@entities/user';
 import { Failure } from '@utils/either';
@@ -40,6 +41,13 @@ describe('User Entity', () => {
 
       expect(result).toBeInstanceOf(Failure);
       expect(result.value).toBeInstanceOf(InvalidEmailError);
+    });
+
+    it('should return Failure and InvalidUserError when sent an empty user data', () => {
+      const result = User.create(<User>{});
+
+      expect(result).toBeInstanceOf(Failure);
+      expect(result.value).toBeInstanceOf(InvalidUserError);
     });
   });
 });
