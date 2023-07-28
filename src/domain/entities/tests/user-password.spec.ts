@@ -21,5 +21,13 @@ describe('UserPassword Entity', () => {
 
       expect(result).toStrictEqual(false);
     });
+
+    it('should return false when sent a password with more than 20 characters', () => {
+      const invalidPassword = 'Inv4l!dPassword123456';
+
+      const result = UserPassword.validate(invalidPassword);
+
+      expect(result).toStrictEqual(false);
+    });
   });
 });
