@@ -18,9 +18,11 @@ export class User {
   }
 
   static create(user: User): Either<InvalidUserError | InvalidEmailError, User> {
-    const emailValid = Email.validate(user.email.value);
-    
-    if (!emailValid) {
+    if (!User.validate(user)) {
+      return failure(new InvalidUserError());
+    }
+
+    if (!Email.validate(user.email.value)) {
       return failure(new InvalidEmailError());
     }
 
@@ -31,7 +33,7 @@ export class User {
     if (!user) {
       return false;
     }
-    
+
     if (!Object.keys(user).length) {
       return false;
     }
