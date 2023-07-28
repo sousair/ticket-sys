@@ -1,5 +1,7 @@
+import { InvalidEmailError } from '@domain/errors/invalid-email';
 import { Email } from '@entities/email';
 import { User } from '@entities/user';
+import { Failure } from '@utils/either';
 
 describe('User Entity', () => {
   const validUser = <User>{
@@ -25,10 +27,19 @@ describe('User Entity', () => {
       expect(result).toStrictEqual(false);
     });
 
-    it('should return true when sent an valid user', () => {
+    it('should return true when sent a valid user data', () => {
       const result = User.validate(validUser);
 
       expect(result).toStrictEqual(true);
+    });
+  });
+
+  describe('create', () => {
+    it('should return Failure and InvalidEmailError when sent an invalid email on user data', () => {
+      const result = User.create(<User>{ email: new Email('invalidMail')});
+
+      expect(result).toBeInstanceOf(Failure);
+      expect(result.value).toBeInstanceOf(InvalidEmailError);
     });
   });
 });
