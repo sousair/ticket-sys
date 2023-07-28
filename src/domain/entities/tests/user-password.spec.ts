@@ -61,5 +61,11 @@ describe('UserPassword Entity', () => {
 
       expect(result).toStrictEqual(false);
     });
+
+    it('should return true when sent a valid password', () => {
+      const result = UserPassword.validate('v4l!dPass');
+
+      expect(result).toStrictEqual(true);
+    });
   });
 });
