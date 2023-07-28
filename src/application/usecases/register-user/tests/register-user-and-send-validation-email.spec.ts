@@ -1,4 +1,5 @@
 import { IEncrypterProvider } from '@application/adapters/providers/encrypter';
+import { IUniqueIDGeneratorProvider } from '@application/adapters/providers/unique-id-generator';
 import { IUserRepository } from '@application/adapters/repositories/user';
 import { InternalError } from '@application/errors/internal-error';
 import { UserAlreadyRegisteredError } from '@application/errors/user-already-registered';
@@ -16,6 +17,7 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
 
   let userRepository: IUserRepository;
   let encrypterProvider: IEncrypterProvider;
+  let uniqueIDGeneratorProvider: IUniqueIDGeneratorProvider;
 
   beforeEach(() => {
     class UserRepositoryStub implements IUserRepository {
@@ -30,10 +32,17 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
       }
     }
 
+    class UniqueIDGeneratorProviderStub implements IUniqueIDGeneratorProvider {
+      generate(): string {
+        return 'id';
+      }
+    }
+
     userRepository = new UserRepositoryStub();
     encrypterProvider = new EncrypterProviderStub();
+    uniqueIDGeneratorProvider = new UniqueIDGeneratorProviderStub();
 
-    sut = new RegisterUserAndSendValidationEmail(userRepository, encrypterProvider);
+    sut = new RegisterUserAndSendValidationEmail(userRepository, encrypterProvider, uniqueIDGeneratorProvider);
 
     validParams = {
       email: new Email('validEmail@domain.com'),
@@ -75,5 +84,11 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
 
     expect(result).toBeInstanceOf(Failure);
     expect(result.value).toBeInstanceOf(InternalError);
+  });
+
+  it('should call UniqueIDGeneratorProvider', async () => {
+    const uniqueIDGeneratorProviderSpy = jest.spyOn(uniqueIDGeneratorProvider, 'generate');
+
+    expect(uniqueIDGeneratorProviderSpy).toHaveBeenCalledTimes(1);
   });
 });
