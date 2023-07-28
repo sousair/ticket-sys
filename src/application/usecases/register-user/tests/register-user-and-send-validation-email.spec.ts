@@ -6,7 +6,7 @@ import { UserAlreadyRegisteredError } from '@application/errors/user-already-reg
 import { Email } from '@entities/email';
 import { User } from '@entities/user';
 import { UserPassword } from '@entities/user-password';
-import { Either, Failure, failure, success } from '@utils/either';
+import { Either, Failure, Success, failure, success } from '@utils/either';
 import { IRegisterUser } from '../register-user';
 import { RegisterUserAndSendValidationEmail } from '../register-user-and-send-validation-email';
 import { InvalidUserError } from '@domain/errors/invalid-user';
@@ -172,5 +172,13 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
       id: mockedGeneratedId,
       email: validParams.email,
     });
+  });
+
+  it('should return Success and User on success', async () => {
+    const result = await sut.register(validParams);
+
+    expect(result).toBeInstanceOf(Success);
+    expect(result.value).toBeInstanceOf(User);
+    expect(result.value).toMatchObject<User>(mockedUser);
   });
 });
