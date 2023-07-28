@@ -42,6 +42,14 @@ export class RegisterUserAndSendValidationEmail implements IRegisterUser {
       return failure(createUserRes.value);
     }
 
+    const user = createUserRes.value;
+
+    const saveRes = await this.userRepository.save(user);
+
+    if (saveRes.isFailure()) {
+      return failure(saveRes.value);
+    }
+
     return success(new User(undefined));
   }
 }
