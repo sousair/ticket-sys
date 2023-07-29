@@ -6,7 +6,7 @@ export interface ISendValidationEmail {
 
 export namespace ISendValidationEmail {
   export type Params = {
-    id: string;
+    userId: string;
     email: Email
   };
 

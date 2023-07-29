@@ -169,7 +169,7 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
 
     expect(sendValidationEmailStub).toHaveBeenCalledTimes(1);
     expect(sendValidationEmailStub).toHaveBeenCalledWith({
-      id: mockedGeneratedId,
+      userId: mockedGeneratedId,
       email: validParams.email,
     });
   });

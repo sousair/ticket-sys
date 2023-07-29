@@ -53,7 +53,7 @@ export class RegisterUserAndSendValidationEmail implements IRegisterUser {
     }
 
     this.sendValidationEmail.send({
-      id: user.id,
+      userId: user.id,
       email: user.email,
     });
 
