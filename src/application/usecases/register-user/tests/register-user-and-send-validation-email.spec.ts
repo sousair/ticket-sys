@@ -55,7 +55,7 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
 
     class SendValidationEmailStub implements ISendValidationEmail {
       async send(): ISendValidationEmail.Result {
-        return;
+        return success(null);
       }
     }
 

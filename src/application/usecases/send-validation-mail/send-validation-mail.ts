@@ -1,4 +1,6 @@
+import { InternalError } from '@application/errors/internal-error';
 import { Email } from '@entities/email';
+import { Either } from '@utils/either';
 
 export interface ISendValidationEmail {
   send(params: ISendValidationEmail.Params): ISendValidationEmail.Result;
@@ -7,8 +9,12 @@ export interface ISendValidationEmail {
 export namespace ISendValidationEmail {
   export type Params = {
     userId: string;
-    email: Email
+    email: Email;
   };
 
-  export type Result = Promise<void>;
+  type PossibleErrors = InternalError;
+
+  type Success = null;
+
+  export type Result = Promise<Either<PossibleErrors, Success>>;
 }
