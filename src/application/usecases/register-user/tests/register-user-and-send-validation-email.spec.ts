@@ -10,7 +10,6 @@ import { Either, Failure, Success, failure, success } from '@utils/either';
 import { IRegisterUser } from '../register-user';
 import { RegisterUserAndSendValidationEmail } from '../register-user-and-send-validation-email';
 import { InvalidUserError } from '@domain/errors/invalid-user';
-import { ISendValidationEmail } from '@application/usecases/send-validation-mail/send-validation-mail';
 
 describe('RegisterUserAndSendValidationEmail UseCase', () => {
   const mockedDate = new Date();
@@ -23,7 +22,6 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
   let userRepository: IUserRepository;
   let encrypterProvider: IEncrypterProvider;
   let uniqueIDGeneratorProvider: IUniqueIDGeneratorProvider;
-  let sendValidationEmail: ISendValidationEmail;
 
   const mockedGeneratedId = 'mockedId';
   const mockedHashedPassword = 'mockedHashedPassword';
@@ -53,18 +51,11 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
       }
     }
 
-    class SendValidationEmailStub implements ISendValidationEmail {
-      async send(): ISendValidationEmail.Result {
-        return success(null);
-      }
-    }
-
     userRepository = new UserRepositoryStub();
     encrypterProvider = new EncrypterProviderStub();
     uniqueIDGeneratorProvider = new UniqueIDGeneratorProviderStub();
-    sendValidationEmail = new SendValidationEmailStub();
 
-    sut = new RegisterUserAndSendValidationEmail(userRepository, encrypterProvider, uniqueIDGeneratorProvider, sendValidationEmail);
+    sut = new RegisterUserAndSendValidationEmail(userRepository, encrypterProvider, uniqueIDGeneratorProvider);
 
     validParams = {
       email: new Email('validEmail@domain.com'),
@@ -160,18 +151,6 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
 
     expect(result).toBeInstanceOf(Failure);
     expect(result.value).toBeInstanceOf(InternalError);
-  });
-
-  it('should call SendValidationEmail with correct values', async () => {
-    const sendValidationEmailStub = jest.spyOn(sendValidationEmail, 'send');
-
-    await sut.register(validParams);
-
-    expect(sendValidationEmailStub).toHaveBeenCalledTimes(1);
-    expect(sendValidationEmailStub).toHaveBeenCalledWith({
-      userId: mockedGeneratedId,
-      email: validParams.email,
-    });
   });
 
   it('should return Success and User on success', async () => {

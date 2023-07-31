@@ -5,14 +5,12 @@ import { UserAlreadyRegisteredError } from '@application/errors/user-already-reg
 import { User } from '@entities/user';
 import { failure, success } from '@utils/either';
 import { IRegisterUser } from './register-user';
-import { ISendValidationEmail } from '../send-validation-mail/send-validation-mail';
 
 export class RegisterUserAndSendValidationEmail implements IRegisterUser {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly encrypter: IEncrypterProvider,
     private readonly uniqueIDGenerator: IUniqueIDGeneratorProvider,
-    private readonly sendValidationEmail: ISendValidationEmail
   ) {}
 
   async register({ email, password }: IRegisterUser.Params): IRegisterUser.Result {
@@ -51,11 +49,6 @@ export class RegisterUserAndSendValidationEmail implements IRegisterUser {
     if (saveRes.isFailure()) {
       return failure(saveRes.value);
     }
-
-    this.sendValidationEmail.send({
-      userId: user.id,
-      email: user.email,
-    });
 
     return success(user);
   }
