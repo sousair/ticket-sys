@@ -1,15 +1,17 @@
 import { IEncrypterProvider } from '@application/adapters/providers/encrypter';
+import { IEventEmitter } from '@application/adapters/providers/event-emitter';
 import { IUniqueIDGeneratorProvider } from '@application/adapters/providers/unique-id-generator';
 import { IUserRepository } from '@application/adapters/repositories/user';
 import { InternalError } from '@application/errors/internal-error';
 import { UserAlreadyRegisteredError } from '@application/errors/user-already-registered';
+import { InvalidUserError } from '@domain/errors/invalid-user';
+import { UserCreatedEvent } from '@domain/events/user-created';
 import { Email } from '@entities/email';
 import { User } from '@entities/user';
 import { UserPassword } from '@entities/user-password';
 import { Either, Failure, Success, failure, success } from '@utils/either';
 import { IRegisterUser } from '../register-user';
 import { RegisterUserAndEmitEvent } from '../register-user-and-emit-event';
-import { InvalidUserError } from '@domain/errors/invalid-user';
 
 describe('RegisterUserAndEmitEvent UseCase', () => {
   const mockedDate = new Date();
@@ -22,6 +24,7 @@ describe('RegisterUserAndEmitEvent UseCase', () => {
   let userRepository: IUserRepository;
   let encrypterProvider: IEncrypterProvider;
   let uniqueIDGeneratorProvider: IUniqueIDGeneratorProvider;
+  let eventEmitter: IEventEmitter;
 
   const mockedGeneratedId = 'mockedId';
   const mockedHashedPassword = 'mockedHashedPassword';
@@ -51,11 +54,18 @@ describe('RegisterUserAndEmitEvent UseCase', () => {
       }
     }
 
+    class EventEmitterStub implements IEventEmitter {
+      emit(): void {
+        return;
+      }
+    }
+
     userRepository = new UserRepositoryStub();
     encrypterProvider = new EncrypterProviderStub();
     uniqueIDGeneratorProvider = new UniqueIDGeneratorProviderStub();
+    eventEmitter = new EventEmitterStub();
 
-    sut = new RegisterUserAndEmitEvent(userRepository, encrypterProvider, uniqueIDGeneratorProvider);
+    sut = new RegisterUserAndEmitEvent(userRepository, encrypterProvider, uniqueIDGeneratorProvider, eventEmitter);
 
     validParams = {
       email: new Email('validEmail@domain.com'),
@@ -151,6 +161,19 @@ describe('RegisterUserAndEmitEvent UseCase', () => {
 
     expect(result).toBeInstanceOf(Failure);
     expect(result.value).toBeInstanceOf(InternalError);
+  });
+
+  it('should call EventEmitter with correct value', async () => {
+    const eventEmitterSpy = jest.spyOn(eventEmitter, 'emit');
+
+    await sut.register(validParams);
+
+    expect(eventEmitterSpy).toHaveBeenCalledTimes(1);
+    expect(eventEmitterSpy).toHaveBeenCalledWith(
+      new UserCreatedEvent({
+        user: mockedUser,
+      })
+    );
   });
 
   it('should return Success and User on success', async () => {
