@@ -1,11 +1,15 @@
 import { ITokenProvider, TokenTypes } from '@application/adapters/providers/token';
 import { InternalError } from '@application/errors/internal-error';
 import { InvalidTokenError } from '@application/errors/invalid-token';
-import { Failure, failure, success } from '@utils/either';
+import { Either, Failure, failure, success } from '@utils/either';
 import { MINUTE_IN_MS } from '@utils/time';
 import { IValidateUserEmail } from '../validate-user-email';
 import { ValidateUserEmailAndEmitEvent } from '../validate-user-email-and-emit-event';
 import { TokenExpiredError } from '@application/errors/token-expired';
+import { IUserRepository } from '@application/adapters/repositories/user';
+import { Email } from '@entities/email';
+import { User } from '@entities/user';
+import { UserNotFoundError } from '@application/errors/user-not-found';
 
 describe('ValidateUserEmailAndEmitEvent UseCase', () => {
   const mockedDate = new Date();
@@ -16,6 +20,7 @@ describe('ValidateUserEmailAndEmitEvent UseCase', () => {
   let sut: ValidateUserEmailAndEmitEvent;
 
   let tokenProvider: ITokenProvider;
+  let userRepository: IUserRepository;
 
   const mockedTokenValidateRes: ITokenProvider.ValidateTokenResData = {
     payload: {
@@ -23,6 +28,16 @@ describe('ValidateUserEmailAndEmitEvent UseCase', () => {
     },
     expirationDate: new Date(mockedDate.getTime() + 3 * MINUTE_IN_MS),
   };
+
+  const mockedUser = new User({
+    id: <string>mockedTokenValidateRes.payload.userId,
+    email: new Email('validEmail@domain.com'),
+    emailValidated: false,
+    hashedPassword: 'hashedPass',
+    createdAt: mockedDate,
+    updatedAt: mockedDate,
+    deletedAt: null,
+  });
 
   beforeEach(() => {
     class TokenProviderStub implements ITokenProvider {
@@ -35,9 +50,22 @@ describe('ValidateUserEmailAndEmitEvent UseCase', () => {
       }
     }
 
-    tokenProvider = new TokenProviderStub();
+    class UserRepositoryStub implements IUserRepository {
+      async findOneByEmail(): Promise<User> {
+        return null;
+      }
+      async findOneById(): Promise<User> {
+        return mockedUser;
+      }
+      async save(): Promise<Either<InternalError, number>> {
+        return success(1);
+      }
+    }
 
-    sut = new ValidateUserEmailAndEmitEvent(tokenProvider);
+    tokenProvider = new TokenProviderStub();
+    userRepository = new UserRepositoryStub();
+
+    sut = new ValidateUserEmailAndEmitEvent(tokenProvider, userRepository);
 
     validParams = {
       token: 'anyAuthToken',
@@ -102,5 +130,23 @@ describe('ValidateUserEmailAndEmitEvent UseCase', () => {
 
     expect(result).toBeInstanceOf(Failure);
     expect(result.value).toBeInstanceOf(InternalError);
+  });
+
+  it('should call UserRepository.findOneById with correct values', async () => {
+    const userRepositorySpy = jest.spyOn(userRepository, 'findOneById');
+
+    await sut.validate(validParams);
+
+    expect(userRepositorySpy).toHaveBeenCalledTimes(1);
+    expect(userRepositorySpy).toHaveBeenCalledWith(mockedTokenValidateRes.payload.userId);
+  });
+
+  it('should return Failure and UserNotFundError when UserRepository.findOneById returns null', async () => {
+    jest.spyOn(userRepository, 'findOneById').mockResolvedValueOnce(null);
+
+    const result = await sut.validate(validParams);
+
+    expect(result).toBeInstanceOf(Failure);
+    expect(result.value).toBeInstanceOf(UserNotFoundError);
   });
 });
