@@ -5,5 +5,6 @@ import { Either } from '@utils/either';
 
 export interface IUserRepository {
   findOneByEmail(email: Email): Promise<User | null>;
+  findOneById(id: string): Promise<User | null>;
   save(user: User): Promise<Either<InternalError, number>>;
 }

@@ -37,6 +37,10 @@ describe('RegisterUserAndEmitEvent UseCase', () => {
         return Promise.resolve(null);
       }
 
+      async findOneById(): Promise<User> {
+        return Promise.resolve(<User>{});
+      }
+
       async save(): Promise<Either<InternalError, number>> {
         return Promise.resolve(success(1));
       }
