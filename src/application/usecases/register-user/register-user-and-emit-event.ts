@@ -6,7 +6,7 @@ import { User } from '@entities/user';
 import { failure, success } from '@utils/either';
 import { IRegisterUser } from './register-user';
 
-export class RegisterUserAndSendValidationEmail implements IRegisterUser {
+export class RegisterUserAndEmitEvent implements IRegisterUser {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly encrypter: IEncrypterProvider,

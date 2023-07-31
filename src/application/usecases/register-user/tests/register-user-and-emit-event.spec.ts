@@ -8,16 +8,16 @@ import { User } from '@entities/user';
 import { UserPassword } from '@entities/user-password';
 import { Either, Failure, Success, failure, success } from '@utils/either';
 import { IRegisterUser } from '../register-user';
-import { RegisterUserAndSendValidationEmail } from '../register-user-and-send-validation-email';
+import { RegisterUserAndEmitEvent } from '../register-user-and-emit-event';
 import { InvalidUserError } from '@domain/errors/invalid-user';
 
-describe('RegisterUserAndSendValidationEmail UseCase', () => {
+describe('RegisterUserAndEmitEvent UseCase', () => {
   const mockedDate = new Date();
   jest.useFakeTimers().setSystemTime(mockedDate.getTime());
 
   let validParams: IRegisterUser.Params;
 
-  let sut: RegisterUserAndSendValidationEmail;
+  let sut: RegisterUserAndEmitEvent;
 
   let userRepository: IUserRepository;
   let encrypterProvider: IEncrypterProvider;
@@ -55,7 +55,7 @@ describe('RegisterUserAndSendValidationEmail UseCase', () => {
     encrypterProvider = new EncrypterProviderStub();
     uniqueIDGeneratorProvider = new UniqueIDGeneratorProviderStub();
 
-    sut = new RegisterUserAndSendValidationEmail(userRepository, encrypterProvider, uniqueIDGeneratorProvider);
+    sut = new RegisterUserAndEmitEvent(userRepository, encrypterProvider, uniqueIDGeneratorProvider);
 
     validParams = {
       email: new Email('validEmail@domain.com'),
