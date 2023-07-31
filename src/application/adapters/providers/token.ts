@@ -34,7 +34,7 @@ export namespace ITokenProvider {
     payload: {
       [key: string]: unknown;
     }
-    expiresDate: Date; 
+    expirationDate: Date; 
   }
 
   export type ValidateTokenResult = Either<ValidateTokenPossibleErrors, ValidateTokenResData>;

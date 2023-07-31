@@ -27,7 +27,7 @@ describe('ValidateUserEmailAndEmitEvent UseCase', () => {
           payload: {
             userId: 'anyUserId',
           },
-          expiresDate: new Date(mockedDate.getTime() + 3 * MINUTE_IN_MS),
+          expirationDate: new Date(mockedDate.getTime() + 3 * MINUTE_IN_MS),
         });
       }
     }
