@@ -1,12 +1,15 @@
 import { ITokenProvider, TokenTypes } from '@application/adapters/providers/token';
+import { IUserRepository } from '@application/adapters/repositories/user';
+import { InternalError } from '@application/errors/internal-error';
+import { TokenExpiredError } from '@application/errors/token-expired';
 import { failure } from '@utils/either';
 import { IValidateUserEmail } from './validate-user-email';
-import { TokenExpiredError } from '@application/errors/token-expired';
-import { InternalError } from '@application/errors/internal-error';
+import { UserNotFoundError } from '@application/errors/user-not-found';
 
 export class ValidateUserEmailAndEmitEvent implements IValidateUserEmail {
   constructor(
     private readonly tokenProvider: ITokenProvider,
+    private readonly userRepository: IUserRepository,
   ) {}
 
   async validate({ token }: IValidateUserEmail.Params): IValidateUserEmail.Result {
@@ -29,6 +32,12 @@ export class ValidateUserEmailAndEmitEvent implements IValidateUserEmail {
 
     if (!userId) {
       return failure(new InternalError('unable to identify user'));
+    }
+
+    const user = await this.userRepository.findOneById(userId);
+
+    if (!user) {
+      return failure(new UserNotFoundError());
     }
   }
 }
