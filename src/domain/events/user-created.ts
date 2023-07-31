@@ -1,11 +1,11 @@
 import { User } from '@entities/user';
 import { IEvent } from '@utils/interfaces/event';
 
-type UserCreatedPayload = {
+export type UserCreatedEventPayload = {
   user: User;
 };
 
-export class UserCreatedEvent implements IEvent<UserCreatedPayload> {
+export class UserCreatedEvent implements IEvent<UserCreatedEventPayload> {
   public eventName = 'user.created';
-  constructor(public payload: UserCreatedPayload) {}
+  constructor(public payload: UserCreatedEventPayload) {}
 }
