@@ -23,8 +23,8 @@ describe('SendUserValidationEmail UseCase', () => {
       generateToken(): ITokenProvider.GenerateTokenResult {
         return success(mockedToken);
       }
-      validateToken(): boolean {
-        return true;
+      validateToken(): ITokenProvider.ValidateTokenResult {
+        return success(<ITokenProvider.ValidateTokenResData>{});
       }
     }
 

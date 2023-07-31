@@ -1,5 +1,6 @@
 import { Either } from '@utils/either';
 import { InternalError } from '@application/errors/internal-error';
+import { InvalidTokenError } from '@application/errors/invalid-token';
 
 export enum TokenTypes {
   VALIDATE_EMAIL = 'validate_email',
@@ -27,5 +28,14 @@ export namespace ITokenProvider {
     token: string;
   };
 
-  export type ValidateTokenResult = boolean;
+  export type ValidateTokenPossibleErrors = InternalError | InvalidTokenError;
+
+  export type ValidateTokenResData = {
+    payload: {
+      [key: string]: unknown;
+    }
+    expiresDate: Date; 
+  }
+
+  export type ValidateTokenResult = Either<ValidateTokenPossibleErrors, ValidateTokenResData>;
 }
