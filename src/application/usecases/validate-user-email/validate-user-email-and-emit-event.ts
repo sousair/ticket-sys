@@ -2,6 +2,7 @@ import { ITokenProvider, TokenTypes } from '@application/adapters/providers/toke
 import { failure } from '@utils/either';
 import { IValidateUserEmail } from './validate-user-email';
 import { TokenExpiredError } from '@application/errors/token-expired';
+import { InternalError } from '@application/errors/internal-error';
 
 export class ValidateUserEmailAndEmitEvent implements IValidateUserEmail {
   constructor(
@@ -24,6 +25,10 @@ export class ValidateUserEmailAndEmitEvent implements IValidateUserEmail {
       return failure(new TokenExpiredError());
     }
 
-    
+    const userId = <string>tokenPayload.userId;
+
+    if (!userId) {
+      return failure(new InternalError('unable to identify user'));
+    }
   }
 }
