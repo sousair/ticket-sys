@@ -87,4 +87,20 @@ describe('ValidateUserEmailAndEmitEvent UseCase', () => {
     expect(result).toBeInstanceOf(Failure);
     expect(result.value).toBeInstanceOf(TokenExpiredError);
   });
+
+  it('should return Failure and InternalError when TokenProvider.validateToken returns a invalid payload', async () => {
+    jest.spyOn(tokenProvider, 'validateToken').mockReturnValueOnce(
+      success({
+        ...mockedTokenValidateRes,
+        payload: {
+          anyKey: 'anyValue',
+        },
+      })
+    );
+
+    const result = await sut.validate(validParams);
+
+    expect(result).toBeInstanceOf(Failure);
+    expect(result.value).toBeInstanceOf(InternalError);
+  });
 });
