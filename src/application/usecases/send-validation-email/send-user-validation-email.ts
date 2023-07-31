@@ -1,5 +1,5 @@
 import { ITokenProvider, TokenTypes } from '@application/adapters/providers/token';
-import { ISendValidationEmail } from './send-validation-mail';
+import { ISendValidationEmail } from './send-validation-email';
 import { MINUTE_IN_MS } from '@utils/time';
 import { failure, success } from '@utils/either';
 

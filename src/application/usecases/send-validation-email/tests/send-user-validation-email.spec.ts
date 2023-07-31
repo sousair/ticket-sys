@@ -3,7 +3,7 @@ import { Email } from '@entities/email';
 import { Failure, failure, success } from '@utils/either';
 import { MINUTE_IN_MS } from '@utils/time';
 import { SendUserValidationEmail } from '../send-user-validation-email';
-import { ISendValidationEmail } from '../send-validation-mail';
+import { ISendValidationEmail } from '../send-validation-email';
 import { InternalError } from '@application/errors/internal-error';
 
 describe('SendUserValidationEmail UseCase', () => {
