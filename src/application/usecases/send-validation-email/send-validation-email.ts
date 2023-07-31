@@ -1,3 +1,4 @@
+import { EmailSendingError } from '@application/errors/email-sending';
 import { InternalError } from '@application/errors/internal-error';
 import { Email } from '@entities/email';
 import { Either } from '@utils/either';
@@ -12,7 +13,7 @@ export namespace ISendValidationEmail {
     email: Email;
   };
 
-  type PossibleErrors = InternalError;
+  type PossibleErrors = EmailSendingError | InternalError;
 
   type Success = null;
 
