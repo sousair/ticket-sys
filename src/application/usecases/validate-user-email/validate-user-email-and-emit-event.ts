@@ -1,6 +1,7 @@
 import { ITokenProvider, TokenTypes } from '@application/adapters/providers/token';
 import { failure } from '@utils/either';
 import { IValidateUserEmail } from './validate-user-email';
+import { TokenExpiredError } from '@application/errors/token-expired';
 
 export class ValidateUserEmailAndEmitEvent implements IValidateUserEmail {
   constructor(
@@ -16,5 +17,13 @@ export class ValidateUserEmailAndEmitEvent implements IValidateUserEmail {
     if (validateTokenRes.isFailure()) {
       return failure(validateTokenRes.value);
     }
+
+    const { payload: tokenPayload, expirationDate: tokenExpirationDate } = validateTokenRes.value;
+
+    if (tokenExpirationDate < new Date()) {
+      return failure(new TokenExpiredError());
+    }
+
+    
   }
 }
