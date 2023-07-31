@@ -5,12 +5,15 @@ import { UserAlreadyRegisteredError } from '@application/errors/user-already-reg
 import { User } from '@entities/user';
 import { failure, success } from '@utils/either';
 import { IRegisterUser } from './register-user';
+import { IEventEmitter } from '@application/adapters/providers/event-emitter';
+import { UserCreatedEvent, UserCreatedEventPayload } from '@domain/events/user-created';
 
 export class RegisterUserAndEmitEvent implements IRegisterUser {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly encrypter: IEncrypterProvider,
     private readonly uniqueIDGenerator: IUniqueIDGeneratorProvider,
+    private readonly eventEmitter: IEventEmitter
   ) {}
 
   async register({ email, password }: IRegisterUser.Params): IRegisterUser.Result {
@@ -49,6 +52,10 @@ export class RegisterUserAndEmitEvent implements IRegisterUser {
     if (saveRes.isFailure()) {
       return failure(saveRes.value);
     }
+
+    const userCreatedEvent = new UserCreatedEvent({ user });
+
+    this.eventEmitter.emit<UserCreatedEventPayload>(userCreatedEvent);
 
     return success(user);
   }
