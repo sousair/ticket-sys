@@ -2,14 +2,17 @@ import { ITokenProvider, TokenTypes } from '@application/adapters/providers/toke
 import { IUserRepository } from '@application/adapters/repositories/user';
 import { InternalError } from '@application/errors/internal-error';
 import { TokenExpiredError } from '@application/errors/token-expired';
-import { failure } from '@utils/either';
-import { IValidateUserEmail } from './validate-user-email';
 import { UserNotFoundError } from '@application/errors/user-not-found';
+import { failure, success } from '@utils/either';
+import { IValidateUserEmail } from './validate-user-email';
+import { IEventEmitter } from '@application/adapters/providers/event-emitter';
+import { UserEmailValidatedEvent, UserEmailValidatedEventPayload } from '@domain/events/user-email-validated';
 
 export class ValidateUserEmailAndEmitEvent implements IValidateUserEmail {
   constructor(
     private readonly tokenProvider: ITokenProvider,
     private readonly userRepository: IUserRepository,
+    private readonly eventEmitter: IEventEmitter
   ) {}
 
   async validate({ token }: IValidateUserEmail.Params): IValidateUserEmail.Result {
@@ -39,5 +42,22 @@ export class ValidateUserEmailAndEmitEvent implements IValidateUserEmail {
     if (!user) {
       return failure(new UserNotFoundError());
     }
+
+    user.emailValidated = true;
+
+    const updateUserRes = await this.userRepository.update(user);
+
+    if (updateUserRes.isFailure()) {
+      return failure(updateUserRes.value);
+    }
+
+    this.eventEmitter.emit<UserEmailValidatedEventPayload>(
+      new UserEmailValidatedEvent({
+        user,
+        validationDate: new Date(),
+      })
+    );
+
+    return success(true);
   }
 }
