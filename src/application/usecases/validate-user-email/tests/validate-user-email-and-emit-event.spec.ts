@@ -37,9 +37,6 @@ describe('ValidateUserEmailAndEmitEvent UseCase', () => {
     email: new Email('validEmail@domain.com'),
     emailValidated: false,
     hashedPassword: 'hashedPass',
-    createdAt: mockedDate,
-    updatedAt: mockedDate,
-    deletedAt: null,
   });
 
   beforeEach(() => {

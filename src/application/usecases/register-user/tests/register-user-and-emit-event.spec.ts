@@ -85,9 +85,6 @@ describe('RegisterUserAndEmitEvent UseCase', () => {
       hashedPassword: mockedHashedPassword,
       email: validParams.email,
       emailValidated: false,
-      createdAt: mockedDate,
-      updatedAt: mockedDate,
-      deletedAt: null,
     };
   });
 

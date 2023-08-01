@@ -9,10 +9,6 @@ export class User {
   emailValidated: boolean;
   hashedPassword: string;
 
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt: Date | null;
-
   constructor(user: User) {
     Object.assign(this, user);
   }

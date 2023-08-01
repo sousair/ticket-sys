@@ -36,9 +36,6 @@ export class RegisterUserAndEmitEvent implements IRegisterUser {
       hashedPassword: encrypterRes.value,
       email: email,
       emailValidated: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      deletedAt: null,
     });
 
     if (createUserRes.isFailure()) {

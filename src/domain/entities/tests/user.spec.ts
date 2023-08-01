@@ -10,9 +10,6 @@ describe('User Entity', () => {
     email: new Email('validEmail@domain.com'),
     emailValidated: false,
     hashedPassword: 'Pa55w0rd',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    deletedAt: null,
   };
 
   describe('validate', () => {
