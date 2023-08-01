@@ -2,7 +2,7 @@ import { ITokenProvider, TokenTypes } from '@application/adapters/providers/toke
 import jsonwebtoken from 'jsonwebtoken';
 import { JSONWebTokenConfigs, JSONWebTokenProvider } from '../jsonwebtoken';
 import { MINUTE_IN_MS } from '@utils/time';
-import { Failure } from '@utils/either';
+import { Failure, Success } from '@utils/either';
 import { InternalError } from '@application/errors/internal-error';
 
 jest.mock('jsonwebtoken', () => ({
@@ -63,6 +63,13 @@ describe('JSONWebToken Provider', () => {
 
       expect(result).toBeInstanceOf(Failure);
       expect(result.value).toBeInstanceOf(InternalError);
+    });
+
+    it('should return Success and a token on success', () => {
+      const result = sut.generateToken(validParams);
+
+      expect(result).toBeInstanceOf(Success);
+      expect(result.value).toStrictEqual('token');
     });
   });
 });
