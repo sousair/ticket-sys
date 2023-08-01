@@ -7,4 +7,5 @@ export interface IUserRepository {
   findOneByEmail(email: Email): Promise<User | null>;
   findOneById(id: string): Promise<User | null>;
   save(user: User): Promise<Either<InternalError, number>>;
+  update(user: User): Promise<Either<InternalError, number>>;
 }

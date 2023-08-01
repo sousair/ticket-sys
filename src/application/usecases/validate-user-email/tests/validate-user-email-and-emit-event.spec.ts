@@ -1,15 +1,15 @@
 import { ITokenProvider, TokenTypes } from '@application/adapters/providers/token';
+import { IUserRepository } from '@application/adapters/repositories/user';
 import { InternalError } from '@application/errors/internal-error';
 import { InvalidTokenError } from '@application/errors/invalid-token';
+import { TokenExpiredError } from '@application/errors/token-expired';
+import { UserNotFoundError } from '@application/errors/user-not-found';
+import { Email } from '@entities/email';
+import { User } from '@entities/user';
 import { Either, Failure, failure, success } from '@utils/either';
 import { MINUTE_IN_MS } from '@utils/time';
 import { IValidateUserEmail } from '../validate-user-email';
 import { ValidateUserEmailAndEmitEvent } from '../validate-user-email-and-emit-event';
-import { TokenExpiredError } from '@application/errors/token-expired';
-import { IUserRepository } from '@application/adapters/repositories/user';
-import { Email } from '@entities/email';
-import { User } from '@entities/user';
-import { UserNotFoundError } from '@application/errors/user-not-found';
 
 describe('ValidateUserEmailAndEmitEvent UseCase', () => {
   const mockedDate = new Date();
@@ -58,6 +58,9 @@ describe('ValidateUserEmailAndEmitEvent UseCase', () => {
         return mockedUser;
       }
       async save(): Promise<Either<InternalError, number>> {
+        return success(1);
+      }
+      async update(): Promise<Either<InternalError, number>> {
         return success(1);
       }
     }

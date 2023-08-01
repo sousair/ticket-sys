@@ -42,7 +42,11 @@ describe('RegisterUserAndEmitEvent UseCase', () => {
       }
 
       async save(): Promise<Either<InternalError, number>> {
-        return Promise.resolve(success(1));
+        return success(1);
+      }
+
+      async update(): Promise<Either<InternalError, number>> {
+        return success(1);
       }
     }
 
