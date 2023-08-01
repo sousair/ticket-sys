@@ -112,7 +112,7 @@ describe('RegisterUserAndEmitEvent UseCase', () => {
     await sut.register(validParams);
 
     expect(encrypterProviderSpy).toHaveBeenCalledTimes(1);
-    expect(encrypterProviderSpy).toHaveBeenCalledWith(validParams.password.value);
+    expect(encrypterProviderSpy).toHaveBeenCalledWith(validParams.password);
   });
 
   it('should return a Failure and InternalError when EncrypterProvider.encryptUserPassword returns a Failure', async () => {

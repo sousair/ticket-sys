@@ -23,7 +23,7 @@ export class RegisterUserAndEmitEvent implements IRegisterUser {
       return failure(new UserAlreadyRegisteredError());
     }
 
-    const encrypterRes = this.encrypter.encryptUserPassword(password.value);
+    const encrypterRes = this.encrypter.encryptUserPassword(password);
 
     if (encrypterRes.isFailure()) {
       return failure(encrypterRes.value);
