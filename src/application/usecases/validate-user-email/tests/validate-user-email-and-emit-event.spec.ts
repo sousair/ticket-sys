@@ -7,7 +7,7 @@ import { TokenExpiredError } from '@application/errors/token-expired';
 import { UserNotFoundError } from '@application/errors/user-not-found';
 import { Email } from '@entities/email';
 import { User } from '@entities/user';
-import { Either, Failure, failure, success } from '@utils/either';
+import { Either, Failure, Success, failure, success } from '@utils/either';
 import { MINUTE_IN_MS } from '@utils/time';
 import { IValidateUserEmail } from '../validate-user-email';
 import { ValidateUserEmailAndEmitEvent } from '../validate-user-email-and-emit-event';
@@ -200,5 +200,12 @@ describe('ValidateUserEmailAndEmitEvent UseCase', () => {
       },
       validationDate: new Date(),
     }));
+  });
+
+  it('should return Success and true on success', async () => {
+    const result = await sut.validate(validParams);
+
+    expect(result).toBeInstanceOf(Success);
+    expect(result.value).toStrictEqual(true);
   });
 });
