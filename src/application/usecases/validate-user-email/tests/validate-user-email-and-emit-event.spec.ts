@@ -1,3 +1,4 @@
+import { IEventEmitter } from '@application/adapters/providers/event-emitter';
 import { ITokenProvider, TokenTypes } from '@application/adapters/providers/token';
 import { IUserRepository } from '@application/adapters/repositories/user';
 import { InternalError } from '@application/errors/internal-error';
@@ -10,6 +11,7 @@ import { Either, Failure, failure, success } from '@utils/either';
 import { MINUTE_IN_MS } from '@utils/time';
 import { IValidateUserEmail } from '../validate-user-email';
 import { ValidateUserEmailAndEmitEvent } from '../validate-user-email-and-emit-event';
+import { UserEmailValidatedEvent } from '@domain/events/user-email-validated';
 
 describe('ValidateUserEmailAndEmitEvent UseCase', () => {
   const mockedDate = new Date();
@@ -21,6 +23,7 @@ describe('ValidateUserEmailAndEmitEvent UseCase', () => {
 
   let tokenProvider: ITokenProvider;
   let userRepository: IUserRepository;
+  let eventEmitter: IEventEmitter;
 
   const mockedTokenValidateRes: ITokenProvider.ValidateTokenResData = {
     payload: {
@@ -54,21 +57,31 @@ describe('ValidateUserEmailAndEmitEvent UseCase', () => {
       async findOneByEmail(): Promise<User> {
         return null;
       }
+
       async findOneById(): Promise<User> {
         return mockedUser;
       }
+
       async save(): Promise<Either<InternalError, number>> {
         return success(1);
       }
+
       async update(): Promise<Either<InternalError, number>> {
         return success(1);
       }
     }
 
+    class EventEmitterStub implements IEventEmitter {
+      emit(): void {
+        return;
+      }
+    }
+
     tokenProvider = new TokenProviderStub();
     userRepository = new UserRepositoryStub();
+    eventEmitter = new EventEmitterStub();
 
-    sut = new ValidateUserEmailAndEmitEvent(tokenProvider, userRepository);
+    sut = new ValidateUserEmailAndEmitEvent(tokenProvider, userRepository, eventEmitter);
 
     validParams = {
       token: 'anyAuthToken',
@@ -151,5 +164,41 @@ describe('ValidateUserEmailAndEmitEvent UseCase', () => {
 
     expect(result).toBeInstanceOf(Failure);
     expect(result.value).toBeInstanceOf(UserNotFoundError);
+  });
+
+  it('should call UserRepository.update with correct values', async () => {
+    const userRepositorySpy = jest.spyOn(userRepository, 'update');
+
+    await sut.validate(validParams);
+
+    expect(userRepositorySpy).toHaveBeenCalledTimes(1);
+    expect(userRepositorySpy).toHaveBeenCalledWith({
+      ...mockedUser,
+      emailValidated: true,
+    });
+  });
+
+  it('should return Failure and InternalError when UserRepository.update returns Failure', async () => {
+    jest.spyOn(userRepository, 'update').mockResolvedValueOnce(failure(new InternalError('error updating user')));
+
+    const result = await sut.validate(validParams);
+
+    expect(result).toBeInstanceOf(Failure);
+    expect(result.value).toBeInstanceOf(InternalError);
+  });
+
+  it('should call EventEmitter with correct values', async () => {
+    const eventEmitterSpy = jest.spyOn(eventEmitter, 'emit');
+
+    await sut.validate(validParams);
+
+    expect(eventEmitterSpy).toHaveBeenCalledTimes(1);
+    expect(eventEmitterSpy).toHaveBeenCalledWith(new UserEmailValidatedEvent({
+      user: {
+        ...mockedUser,
+        emailValidated: true,
+      },
+      validationDate: new Date(),
+    }));
   });
 });
