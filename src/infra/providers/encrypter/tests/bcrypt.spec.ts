@@ -50,4 +50,11 @@ describe('BcryptEncrypter Provider', () => {
     expect(result).toBeInstanceOf(Failure);
     expect(result.value).toBeInstanceOf(InternalError);
   });
+
+  it('should return Success and a hashed password on success', () => {
+    const result = sut.encryptUserPassword(validParams);
+
+    expect(result).toBeInstanceOf(Success);
+    expect(result.value).toStrictEqual('hashedPassword');
+  });
 });
