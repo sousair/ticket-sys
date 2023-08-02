@@ -1,5 +1,5 @@
 import { IEncrypterProvider } from '@application/adapters/providers/encrypter';
-import { IEventEmitter } from '@application/adapters/providers/event-emitter';
+import { IEventProvider } from '@application/adapters/providers/event';
 import { IUniqueIDGeneratorProvider } from '@application/adapters/providers/unique-id-generator';
 import { IUserRepository } from '@application/adapters/repositories/user';
 import { InternalError } from '@application/errors/internal-error';
@@ -24,7 +24,7 @@ describe('RegisterUserAndEmitEvent UseCase', () => {
   let userRepository: IUserRepository;
   let encrypterProvider: IEncrypterProvider;
   let uniqueIDGeneratorProvider: IUniqueIDGeneratorProvider;
-  let eventEmitter: IEventEmitter;
+  let eventProvider: IEventProvider;
 
   const mockedGeneratedId = 'mockedId';
   const mockedHashedPassword = 'mockedHashedPassword';
@@ -62,7 +62,7 @@ describe('RegisterUserAndEmitEvent UseCase', () => {
       }
     }
 
-    class EventEmitterStub implements IEventEmitter {
+    class EventProvider implements IEventProvider {
       emit(): void {
         return;
       }
@@ -71,9 +71,9 @@ describe('RegisterUserAndEmitEvent UseCase', () => {
     userRepository = new UserRepositoryStub();
     encrypterProvider = new EncrypterProviderStub();
     uniqueIDGeneratorProvider = new UniqueIDGeneratorProviderStub();
-    eventEmitter = new EventEmitterStub();
+    eventProvider = new EventProvider();
 
-    sut = new RegisterUserAndEmitEvent(userRepository, encrypterProvider, uniqueIDGeneratorProvider, eventEmitter);
+    sut = new RegisterUserAndEmitEvent(userRepository, encrypterProvider, uniqueIDGeneratorProvider, eventProvider);
 
     validParams = {
       email: new Email('validEmail@domain.com'),
@@ -168,13 +168,13 @@ describe('RegisterUserAndEmitEvent UseCase', () => {
     expect(result.value).toBeInstanceOf(InternalError);
   });
 
-  it('should call EventEmitter with correct value', async () => {
-    const eventEmitterSpy = jest.spyOn(eventEmitter, 'emit');
+  it('should call EventProvider with correct value', async () => {
+    const eventProviderSpy = jest.spyOn(eventProvider, 'emit');
 
     await sut.register(validParams);
 
-    expect(eventEmitterSpy).toHaveBeenCalledTimes(1);
-    expect(eventEmitterSpy).toHaveBeenCalledWith(
+    expect(eventProviderSpy).toHaveBeenCalledTimes(1);
+    expect(eventProviderSpy).toHaveBeenCalledWith(
       new UserCreatedEvent({
         user: mockedUser,
       })

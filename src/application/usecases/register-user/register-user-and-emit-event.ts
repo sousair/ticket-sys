@@ -1,19 +1,19 @@
 import { IEncrypterProvider } from '@application/adapters/providers/encrypter';
+import { IEventProvider } from '@application/adapters/providers/event';
 import { IUniqueIDGeneratorProvider } from '@application/adapters/providers/unique-id-generator';
 import { IUserRepository } from '@application/adapters/repositories/user';
 import { UserAlreadyRegisteredError } from '@application/errors/user-already-registered';
+import { UserCreatedEvent, UserCreatedEventPayload } from '@domain/events/user-created';
 import { User } from '@entities/user';
 import { failure, success } from '@utils/either';
 import { IRegisterUser } from './register-user';
-import { IEventEmitter } from '@application/adapters/providers/event-emitter';
-import { UserCreatedEvent, UserCreatedEventPayload } from '@domain/events/user-created';
 
 export class RegisterUserAndEmitEvent implements IRegisterUser {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly encrypter: IEncrypterProvider,
     private readonly uniqueIDGenerator: IUniqueIDGeneratorProvider,
-    private readonly eventEmitter: IEventEmitter
+    private readonly eventProvider: IEventProvider
   ) {}
 
   async register({ email, password }: IRegisterUser.Params): IRegisterUser.Result {
@@ -52,7 +52,7 @@ export class RegisterUserAndEmitEvent implements IRegisterUser {
 
     const userCreatedEvent = new UserCreatedEvent({ user });
 
-    this.eventEmitter.emit<UserCreatedEventPayload>(userCreatedEvent);
+    this.eventProvider.emit<UserCreatedEventPayload>(userCreatedEvent);
 
     return success(user);
   }

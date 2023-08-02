@@ -1,17 +1,17 @@
-import { IEventEmitter } from '@application/adapters/providers/event-emitter';
+import { IEventProvider } from '@application/adapters/providers/event';
 import { ITokenProvider, TokenTypes } from '@application/adapters/providers/token';
 import { IUserRepository } from '@application/adapters/repositories/user';
 import { InternalError } from '@application/errors/internal-error';
 import { InvalidTokenError } from '@application/errors/invalid-token';
 import { TokenExpiredError } from '@application/errors/token-expired';
 import { UserNotFoundError } from '@application/errors/user-not-found';
+import { UserEmailValidatedEvent } from '@domain/events/user-email-validated';
 import { Email } from '@entities/email';
 import { User } from '@entities/user';
 import { Either, Failure, Success, failure, success } from '@utils/either';
 import { MINUTE_IN_MS } from '@utils/time';
 import { IValidateUserEmail } from '../validate-user-email';
 import { ValidateUserEmailAndEmitEvent } from '../validate-user-email-and-emit-event';
-import { UserEmailValidatedEvent } from '@domain/events/user-email-validated';
 
 describe('ValidateUserEmailAndEmitEvent UseCase', () => {
   const mockedDate = new Date();
@@ -23,7 +23,7 @@ describe('ValidateUserEmailAndEmitEvent UseCase', () => {
 
   let tokenProvider: ITokenProvider;
   let userRepository: IUserRepository;
-  let eventEmitter: IEventEmitter;
+  let eventProvider: IEventProvider;
 
   const mockedTokenValidateRes: ITokenProvider.ValidateTokenResData = {
     payload: {
@@ -68,7 +68,7 @@ describe('ValidateUserEmailAndEmitEvent UseCase', () => {
       }
     }
 
-    class EventEmitterStub implements IEventEmitter {
+    class EventProviderStub implements IEventProvider {
       emit(): void {
         return;
       }
@@ -76,9 +76,9 @@ describe('ValidateUserEmailAndEmitEvent UseCase', () => {
 
     tokenProvider = new TokenProviderStub();
     userRepository = new UserRepositoryStub();
-    eventEmitter = new EventEmitterStub();
+    eventProvider = new EventProviderStub();
 
-    sut = new ValidateUserEmailAndEmitEvent(tokenProvider, userRepository, eventEmitter);
+    sut = new ValidateUserEmailAndEmitEvent(tokenProvider, userRepository, eventProvider);
 
     validParams = {
       token: 'anyAuthToken',
@@ -184,13 +184,13 @@ describe('ValidateUserEmailAndEmitEvent UseCase', () => {
     expect(result.value).toBeInstanceOf(InternalError);
   });
 
-  it('should call EventEmitter with correct values', async () => {
-    const eventEmitterSpy = jest.spyOn(eventEmitter, 'emit');
+  it('should call EventProvider with correct values', async () => {
+    const eventProviderSpy = jest.spyOn(eventProvider, 'emit');
 
     await sut.validate(validParams);
 
-    expect(eventEmitterSpy).toHaveBeenCalledTimes(1);
-    expect(eventEmitterSpy).toHaveBeenCalledWith(new UserEmailValidatedEvent({
+    expect(eventProviderSpy).toHaveBeenCalledTimes(1);
+    expect(eventProviderSpy).toHaveBeenCalledWith(new UserEmailValidatedEvent({
       user: {
         ...mockedUser,
         emailValidated: true,
