@@ -117,5 +117,17 @@ describe('JSONWebToken Provider', () => {
       expect(result).toBeInstanceOf(Failure);
       expect(result.value).toBeInstanceOf(InvalidTokenError);
     });
+
+    it('should return Success and PayloadInfo on success', () => {
+      const result = sut.validateToken(validParams);
+
+      expect(result).toBeInstanceOf(Success);
+      expect(result.value).toMatchObject({
+        payload: {
+          key: 'value',
+        },
+        expirationDate: mockedExpirationDate,
+      });
+    });
   });
 });
