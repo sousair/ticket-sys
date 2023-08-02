@@ -23,6 +23,7 @@
     "bcrypt": "^5.1.0",
     "jsonwebtoken": "^9.0.1",
     "nodemailer": "^6.9.4",
+    "typeorm": "^0.3.17",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
