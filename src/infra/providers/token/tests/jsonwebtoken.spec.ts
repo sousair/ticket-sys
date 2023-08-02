@@ -1,14 +1,29 @@
 import { ITokenProvider, TokenTypes } from '@application/adapters/providers/token';
-import jsonwebtoken from 'jsonwebtoken';
-import { JSONWebTokenConfigs, JSONWebTokenProvider } from '../jsonwebtoken';
-import { MINUTE_IN_MS } from '@utils/time';
-import { Failure, Success } from '@utils/either';
 import { InternalError } from '@application/errors/internal-error';
+import { Failure, Success } from '@utils/either';
+import { MINUTE_IN_MS } from '@utils/time';
+import jsonwebtoken, { Jwt } from 'jsonwebtoken';
+import { JSONWebTokenConfigs, JSONWebTokenProvider } from '../jsonwebtoken';
+import { InvalidTokenError } from '@application/errors/invalid-token';
+
+const mockedExpirationDate = new Date();
 
 jest.mock('jsonwebtoken', () => ({
   sign(): string {
     return 'token';
-  }
+  },
+  verify(): Jwt {
+    return {
+      payload: {
+        key: 'value',
+        exp: mockedExpirationDate.getTime() / 1000,
+      },
+      signature: '',
+      header: {
+        alg: 'algorithm',
+      },
+    };
+  },
 }));
 
 describe('JSONWebToken Provider', () => {
@@ -70,6 +85,37 @@ describe('JSONWebToken Provider', () => {
 
       expect(result).toBeInstanceOf(Success);
       expect(result.value).toStrictEqual('token');
+    });
+  });
+
+  describe('validateToken', () => {
+    let validParams: ITokenProvider.ValidateTokenParams;
+
+    beforeEach(() => {
+      validParams = {
+        type: TokenTypes.VALIDATE_EMAIL,
+        token: 'jwtToken',
+      };
+    });
+
+    it('should call jsonwebtoken.verify with correct values', () => {
+      const jwtSpy = jest.spyOn(jsonwebtoken, 'verify');
+
+      sut.validateToken(validParams);
+
+      expect(jwtSpy).toHaveBeenCalledTimes(1);
+      expect(jwtSpy).toHaveBeenCalledWith(validParams.token, configs.emailValidationTokenSecret, { complete: true, ignoreExpiration: true });
+    });
+
+    it('should return Failure and InvalidTokenError when jsonwebtoken.verify throws', () => {
+      jest.spyOn(jsonwebtoken, 'verify').mockImplementationOnce(() => {
+        throw new Error();
+      });
+
+      const result = sut.validateToken(validParams);
+
+      expect(result).toBeInstanceOf(Failure);
+      expect(result.value).toBeInstanceOf(InvalidTokenError);
     });
   });
 });
