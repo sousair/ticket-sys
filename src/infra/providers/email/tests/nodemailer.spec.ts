@@ -3,7 +3,7 @@ import nodemailer from 'nodemailer';
 import { NodemailerProvider } from '../nodemailer';
 import { NodemailerConfigs } from './../nodemailer';
 import { Email } from '@entities/email';
-import { Failure } from '@utils/either';
+import { Failure, Success } from '@utils/either';
 import { EmailSendingError } from '@application/errors/email-sending';
 
 jest.mock('nodemailer', () => ({
@@ -77,5 +77,12 @@ describe('Nodemailer Provider', () => {
 
     expect(result).toBeInstanceOf(Failure);
     expect(result.value).toBeInstanceOf(EmailSendingError);
+  });
+
+  it('should return Success on success', async () => {
+    const result = await sut.sendMail(validParams);
+
+    expect(result).toBeInstanceOf(Success);
+    expect(result.value).toBeTruthy();
   });
 });
