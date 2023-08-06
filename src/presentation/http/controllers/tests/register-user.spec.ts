@@ -22,7 +22,7 @@ describe('RegisterUser Controller', () => {
   beforeEach(() => {
     class RegisterUserStub implements IRegisterUser {
       async register(): IRegisterUser.Result {
-        return success(new User(<User>{}));
+        return success(<User>{});
       }
     }
 
@@ -144,7 +144,7 @@ describe('RegisterUser Controller', () => {
     });
   });
 
-  it('should return status INTERNAL_SERVER_ERROR(500) and "internal server error" message when Register user returns failure and a unknown CustomError', async () => {
+  it('should return status INTERNAL_SERVER_ERROR(500) and "internal server error" message when RegisterUser returns failure and a unknown CustomError', async () => {
     class UnknownCustomError extends CustomError {
       constructor() {
         super({
@@ -161,6 +161,20 @@ describe('RegisterUser Controller', () => {
       status: HttpStatusCode.INTERNAL_SERVER_ERROR,
       data: {
         message: 'internal server error',
+      },
+    });
+  });
+
+  it('should return status CREATED and "user successfully created" message when returns success', async () => {
+    const result = await sut.handle(validParams);
+
+    expect(result).toEqual({
+      status: HttpStatusCode.CREATED,
+      data: {
+        message: 'user successfully created',
+        data: {
+          user: <User>{},
+        },
       },
     });
   });
