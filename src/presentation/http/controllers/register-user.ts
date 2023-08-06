@@ -50,6 +50,7 @@ export class RegisterUserController implements IController<RegisterUserControlle
       message: 'internal server error',
     },
   };
+
   constructor(private readonly registerUser: IRegisterUser) {}
 
   async handle({ email, password }: RegisterUserController.Params): Promise<IControllerResponse<RegisterUserController.ResultData>> {
@@ -90,6 +91,14 @@ export class RegisterUserController implements IController<RegisterUserControlle
       };
     }
 
-    return;
+    const user = registerUserRes.value;
+
+    return {
+      status: HttpStatusCode.CREATED,
+      data: {
+        message: 'user successfully created',
+        user,
+      },
+    };
   }
 }
