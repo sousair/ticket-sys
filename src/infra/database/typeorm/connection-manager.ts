@@ -37,4 +37,8 @@ export class TypeORMConnectionManager {
     this.dataSource = dataSource;
     return this.dataSource;
   }
+
+  static getInstance(): DataSource {
+    return this.dataSource;
+  }
 }
