@@ -1,5 +1,5 @@
 import { RegisterUserAndEmitEventFactory } from '@main/factories/application/usecases/register-user-and-emit-event';
-import { RegisterUserController } from 'src/presentation/http/controllers/register-user';
+import { RegisterUserController } from '@presentation/http/controllers/register-user';
 
 export class RegisterUserControllerFactory {
   static instance: RegisterUserController;
