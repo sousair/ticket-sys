@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  ticket-sys:
+    container_name: ticket-sys
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: ticket-sys
+    ports:
+      - 8080:80
+    networks:
+      - ticket-sys-ntwrk
+    volumes:
+      - ./src:/usr/src/app/src
+    depends_on:
+      - mysql
+
+  mysql:
+    container_name: mysql
+    image: mysql:5.7
+    command: --innodb-use-native-aio=0
+    restart: always
+    tty: true
+    networks:
+      - ticket-sys-ntwrk
+    environment:
+      - MYSQL_ROOT_PASSWORD=root.password
+      - MYSQL_DATABASE=ticket_sys
+      - MYSQL_USER=ticket.sys
+      - MYSQL_PASSWORD=ticket.sys.password
+
+networks:
+  ticket-sys-ntwrk:
+    name: ticket-sys-ntwrk
+    driver: bridge
