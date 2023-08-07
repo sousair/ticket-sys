@@ -11,6 +11,10 @@ export class EnvConfig {
   // * BCrypt configs
   BCRYPT_PASSWORD_SALT_ROUNTS: number;
 
+  // * JWT configs
+  VALIDATION_EMAIL_JWT_SECRET: string;
+  USER_AUTH_JWT_SECRET: string;
+
   static get APP_PORT(): string {
     return process.env.APP_PORT;
   }
@@ -37,5 +41,12 @@ export class EnvConfig {
 
   static get BCRYPT_PASSWORD_SALT_ROUNTS(): number {
     return Number(process.env.BCRYPT_PASSWORD_SALT_ROUNTS);
+  }
+
+  static get VALIDATION_EMAIL_JWT_SECRET(): string {
+    return process.env.VALIDATION_EMAIL_JWT_SECRET;
+  }
+  static get USER_AUTH_JWT_SECRET(): string {
+    return process.env.USER_AUTH_JWT_SECRET;
   }
 }
