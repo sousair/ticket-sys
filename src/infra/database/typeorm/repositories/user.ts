@@ -3,15 +3,14 @@ import { InternalError } from '@application/errors/internal-error';
 import { Email } from '@entities/email';
 import { User } from '@entities/user';
 import { Either, failure, success } from '@utils/either';
-import { DataSource, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { TypeORMConnectionManager } from '../connection-manager';
 import { UserEntity } from '../entities/user';
 
 // TODO: Test this class
 export class TypeORMUserRepository implements IUserRepository {
-  private readonly repository: Repository<UserEntity>;
-
-  constructor(dataSource: DataSource) {
-    this.repository = dataSource.getRepository(UserEntity);
+  private get repository(): Repository<UserEntity> {
+    return TypeORMConnectionManager.getInstance().getRepository(UserEntity);
   }
 
   async findOneByEmail(email: Email): Promise<User> {
