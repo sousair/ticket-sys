@@ -8,7 +8,7 @@ export class CreateUser1690997115968 implements MigrationInterface {
         columns: [
           new TableColumn({
             name: 'id',
-            type: 'CHAR(36)',
+            type: 'CHAR',
             isPrimary: true,
             isGenerated: true,
             generationStrategy: 'uuid',
@@ -18,6 +18,12 @@ export class CreateUser1690997115968 implements MigrationInterface {
             type: 'VARCHAR(255)',
             isUnique: true,
             isNullable: false,
+          }),
+          new TableColumn({
+            name: 'email_validated',
+            type: 'boolean',
+            isNullable: false,
+            default: false,
           }),
           new TableColumn({
             name: 'password',
@@ -31,7 +37,7 @@ export class CreateUser1690997115968 implements MigrationInterface {
             default: 'now()',
           }),
           new TableColumn({
-            name: 'created_at',
+            name: 'updated_at',
             type: 'TIMESTAMP',
             isNullable: false,
             default: 'now()',
