@@ -4,6 +4,6 @@ import { Router } from 'express';
 
 const userRouter = Router();
 
-userRouter.post('/user', adaptControllerToExpressRoute(RegisterUserControllerFactory.getInstance()));
+userRouter.post('/', adaptControllerToExpressRoute(RegisterUserControllerFactory.getInstance()));
 
 export { userRouter };
