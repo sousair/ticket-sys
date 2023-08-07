@@ -18,7 +18,8 @@
       "@application/*": ["./src/application/*"],
       "@utils/*": ["./src/utils/*"],
       "@infra/*": ["./src/infra/*"],
-      "@main/*": ["./src/main/*"]
+      "@main/*": ["./src/main/*"],
+      "@presentation/*": ["./src/presentation/*"]
     }
   }
 }
