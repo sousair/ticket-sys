@@ -9,8 +9,8 @@ TypeORMConnectionManager.getDataSource({
   port: EnvConfig.DATABASE_PORT,
   username: EnvConfig.DATABASE_USER,
   password: EnvConfig.DATABASE_USER_PASSWORD,
-});
-
-app.listen(EnvConfig.APP_PORT, () => {
-  console.log(`Server running at port ${EnvConfig.APP_PORT}`);
+}).then(() => {
+  app.listen(EnvConfig.APP_PORT, () => {
+    console.log(`Server running at port ${EnvConfig.APP_PORT}`);
+  });
 });
