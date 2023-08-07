@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY package.json yarn.lock ./
 
-RUN yarn
+RUN yarn install --frozen-lockfile
 
 COPY . .
 
@@ -12,15 +12,16 @@ RUN yarn test
 
 RUN yarn build
 
-
 FROM node:slim
 
 WORKDIR /usr/src/app
 
 COPY package.json yarn.lock ./
 
-RUN yarn
+RUN yarn install --production --frozen-lockfile
 
-COPY --from=builder usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/dist ./dist
 
-ENTRYPOINT [ "node", "dist/main/server.js" ]
+COPY .env .
+
+CMD [ "node", "dist/main/server.js" ]

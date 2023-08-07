@@ -1,7 +1,8 @@
 import { TypeORMConnectionManager } from '@infra/database/typeorm/connection-manager';
+import 'dotenv/config';
+import 'reflect-metadata';
 import { app } from './app';
 import { EnvConfig } from './configs/env';
-import 'dotenv';
 
 TypeORMConnectionManager.getDataSource({
   type: 'mysql',
