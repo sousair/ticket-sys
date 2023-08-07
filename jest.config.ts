@@ -28,7 +28,12 @@ export default {
   coverageDirectory: 'coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
-  coveragePathIgnorePatterns: ['src/application/adapters', 'src/utils/interfaces'],
+  coveragePathIgnorePatterns: [
+    'src/application/adapters',
+    'src/utils/interfaces',
+    'src/infra/database/typeorm/entities',
+    'src/infra/database/typeorm/migrations',
+  ],
 
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: 'v8',
