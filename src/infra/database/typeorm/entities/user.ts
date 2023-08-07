@@ -4,25 +4,25 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryColumn, Upda
 
 @Entity({ name: 'user' })
 export class UserEntity {
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'char' })
     id: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
     email: string;
 
-  @Column({ name: 'email_validated' })
+  @Column({ type: 'boolean', name: 'email_validated' })
     emailValidated: boolean;
 
-  @Column({ name: 'password' })
+  @Column({ type: 'varchar' ,name: 'password' })
     hashedPassword: string;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
     createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at' })
+  @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
     updatedAt: Date;
 
-  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at', nullable: true })
     deletedAt: Date | null;
 
   static formatToDomainEntity({ id, email, emailValidated, hashedPassword }: UserEntity): User {
