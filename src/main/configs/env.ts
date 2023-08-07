@@ -15,6 +15,13 @@ export class EnvConfig {
   VALIDATION_EMAIL_JWT_SECRET: string;
   USER_AUTH_JWT_SECRET: string;
 
+  // * TypeORM configs
+  DATABASE_NAME: string;
+  DATABASE_HOST: string;
+  DATABASE_PORT: number;
+  DATABASE_USER: string;
+  DATABASE_USER_PASSWORD: string;
+
   static get APP_PORT(): string {
     return process.env.APP_PORT;
   }
@@ -46,7 +53,28 @@ export class EnvConfig {
   static get VALIDATION_EMAIL_JWT_SECRET(): string {
     return process.env.VALIDATION_EMAIL_JWT_SECRET;
   }
+
   static get USER_AUTH_JWT_SECRET(): string {
     return process.env.USER_AUTH_JWT_SECRET;
+  }
+
+  static get DATABASE_NAME(): string {
+    return process.env.DATABASE_NAME;
+  }
+
+  static get DATABASE_HOST(): string {
+    return process.env.DATABASE_HOST;
+  }
+
+  static get DATABASE_PORT(): number {
+    return Number(process.env.DATABASE_PORT);
+  }
+
+  static get DATABASE_USER(): string {
+    return process.env.DATABASE_USER;
+  }
+
+  static get DATABASE_USER_PASSWORD(): string {
+    return process.env.DATABASE_USER_PASSWORD;
   }
 }
