@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json.schemastore.org/swcrc",
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "dynamicImport": true,
+      "decorators": true,
+      "tsx": false,
+    },
+    "loose": false,
+    "target": "es2019",
+    "externalHelpers": false,
+    "keepClassNames": false,
+    "paths": {
+      "@entities/*": ["./src/domain/entities/*"],
+      "@domain/*": ["./src/domain/*"],
+      "@application/*": ["./src/application/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@infra/*": ["./src/infra/*"],
+      "@main/*": ["./src/main/*"]
+    }
+  }
+}
