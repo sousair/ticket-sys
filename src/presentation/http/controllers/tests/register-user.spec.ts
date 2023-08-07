@@ -172,9 +172,7 @@ describe('RegisterUser Controller', () => {
       status: HttpStatusCode.CREATED,
       data: {
         message: 'user successfully created',
-        data: {
-          user: <User>{},
-        },
+        user: <User>{},
       },
     });
   });
