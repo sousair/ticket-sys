@@ -48,25 +48,44 @@ describe('TypeORMConnectionManager', () => {
     });
   });
 
-  it('should throws when initialize throws', async () => {
-    await expect(TypeORMConnectionManager.getDataSource(configs)).rejects.toThrow();
+  describe('getDataSource', () => {
+    it('should throws when initialize throws', async () => {
+      await expect(TypeORMConnectionManager.getDataSource(configs)).rejects.toThrow();
+    });
+
+    it('should return a DataSource when success on first call and set ', async () => {
+      const result = await TypeORMConnectionManager.getDataSource(configs);
+
+      expect(result).toBeDefined();
+      expect(TypeORMConnectionManager.dataSource).toBeDefined();
+    });
+
+    it('should return a DataSource when success on second call and not call typeorm.DataSource', async () => {
+      // * Simulate first call
+      TypeORMConnectionManager.dataSource = <DataSource>{};
+
+      const result = await TypeORMConnectionManager.getDataSource(configs);
+
+      expect(result).toBeDefined();
+      expect(TypeORMConnectionManager.dataSource).toBeDefined();
+      expect(DataSource).not.toHaveBeenCalled();
+    });
   });
 
-  it('should return a DataSource when success on first call and set ', async () => {
-    const result = await TypeORMConnectionManager.getDataSource(configs);
+  describe('getInstance', () => {
+    it('should return undefined when dataSource is not initialized yet', () => {
+      const result = TypeORMConnectionManager.getInstance();
 
-    expect(result).toBeDefined();
-    expect(TypeORMConnectionManager.dataSource).toBeDefined();
-  });
+      expect(TypeORMConnectionManager.dataSource).toBeUndefined();
+      expect(result).toBeUndefined();
+    });
 
-  it('should return a DataSource when success on second call and not call typeorm.DataSource', async () => {
-    // * Simulate first call
-    TypeORMConnectionManager.dataSource = <DataSource>{};
+    it('should return a DataSource when dataSource is initialized', () => {
+      TypeORMConnectionManager.dataSource = <DataSource>{};
+      const result = TypeORMConnectionManager.getInstance();
 
-    const result = await TypeORMConnectionManager.getDataSource(configs);
-
-    expect(result).toBeDefined();
-    expect(TypeORMConnectionManager.dataSource).toBeDefined();
-    expect(DataSource).not.toHaveBeenCalled();
+      expect(TypeORMConnectionManager.dataSource).toBeDefined();
+      expect(result).toBeDefined();
+    });
   });
 });
