@@ -43,7 +43,7 @@ describe('TypeORMConnectionManager', () => {
       ...configs,
       logging: false,
       entities: [join(dirname, '/entities/**/*{.ts,.js}')],
-      migrations: [join(dirname, '/migration/**/*{.ts,.js}')],
+      migrations: [join(dirname, '/migrations/**/*{.ts,.js}')],
       migrationsRun: true,
     });
   });
