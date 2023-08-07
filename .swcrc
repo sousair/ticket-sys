@@ -1,14 +1,17 @@
 {
   "$schema": "https://json.schemastore.org/swcrc",
+  "module": {
+    "type": "commonjs"
+  },
   "jsc": {
     "parser": {
       "syntax": "typescript",
-      "dynamicImport": true,
       "decorators": true,
       "tsx": false,
+      "dynamicImport": true
     },
     "loose": false,
-    "target": "es2019",
+    "target": "es2020",
     "externalHelpers": false,
     "keepClassNames": false,
     "paths": {
