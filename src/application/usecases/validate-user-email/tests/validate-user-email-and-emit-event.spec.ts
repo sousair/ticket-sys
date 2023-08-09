@@ -72,6 +72,9 @@ describe('ValidateUserEmailAndEmitEvent UseCase', () => {
       emit(): void {
         return;
       }
+      registerHandler(): boolean {
+        return true;
+      }
     }
 
     tokenProvider = new TokenProviderStub();

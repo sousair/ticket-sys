@@ -66,6 +66,10 @@ describe('RegisterUserAndEmitEvent UseCase', () => {
       emit(): void {
         return;
       }
+
+      registerHandler(): boolean {
+        return true;
+      }
     }
 
     userRepository = new UserRepositoryStub();
