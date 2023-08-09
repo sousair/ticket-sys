@@ -1,4 +1,3 @@
-import { TypeORMConnectionManager } from '@infra/database/typeorm/connection-manager';
 import { TypeORMUserRepository } from '@infra/database/typeorm/repositories/user';
 
 export class TypeORMUserRepositoryFactory {
@@ -7,7 +6,7 @@ export class TypeORMUserRepositoryFactory {
   static getInstance(): TypeORMUserRepository {
     if (this.instance) return this.instance;
 
-    this.instance = new TypeORMUserRepository(TypeORMConnectionManager.getInstance());
+    this.instance = new TypeORMUserRepository();
     return this.instance;
   }
 }
