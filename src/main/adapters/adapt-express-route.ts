@@ -6,6 +6,7 @@ export function adaptControllerToExpressRoute<Params, Res>(controller: IControll
   return async (req: Request, res: Response): Promise<Response> => {
     const params = {
       ...req.body,
+      ...req.params,
     };
 
     const { status, data } = await controller.handle(params);
