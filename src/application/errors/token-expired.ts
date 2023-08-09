@@ -4,7 +4,7 @@ export class TokenExpiredError extends CustomError {
   constructor() {
     super({
       name: 'TokenExpiredError',
-      message: 'token expired',
+      message: 'expired token',
     });
   }
 }
