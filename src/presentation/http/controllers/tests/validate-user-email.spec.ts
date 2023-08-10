@@ -126,4 +126,15 @@ describe('ValidateUserEmail Controller', () => {
       },
     });
   });
+
+  it('should return status OK(200) and "user email successfully validated" message when ValidateUserEmail returns success', async () => {
+    const result = await sut.handle(validParams);
+
+    expect(result).toEqual({
+      status: HttpStatusCode.OK,
+      data: {
+        message: 'user email successfully validated',
+      },
+    });
+  });
 });
