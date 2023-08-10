@@ -13,6 +13,6 @@ export abstract class CustomError extends Error {
     super(message);
     this.message = message;
     this.name = name;
-    this.stack = stack;
+    this.stack = stack ?? new Error().stack;
   }
 }
