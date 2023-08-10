@@ -65,6 +65,11 @@ export class ValidateUserEmailController implements IController<ValidateUserEmai
       };
     }
 
-    return;
+    return {
+      status: HttpStatusCode.OK,
+      data: {
+        message: 'user email successfully validated',
+      },
+    };
   }
 }
