@@ -1,9 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import 'reflect-metadata';
-
-export const EventHandler =
-  (eventName: string) =>
-  (target: any): any => {
-    Reflect.defineMetadata('EVENT_NAME', eventName, target);
+export const EventHandler = (eventName: string): ClassDecorator => {
+  return (target) => {
+    Reflect.defineMetadata('EVENT_NAME', eventName, target.prototype);
     return target;
   };
+};
