@@ -118,7 +118,7 @@ describe('RegisterUser Controller', () => {
     });
   });
 
-  it('should return status BAD_REQUEST(409) and "email already registered" message when RegisterUser returns failure and UserAlreadyRegisteredError', async () => {
+  it('should return status CONFLICT(409) and "email already registered" message when RegisterUser returns failure and UserAlreadyRegisteredError', async () => {
     jest.spyOn(registerUser, 'register').mockResolvedValueOnce(failure(new UserAlreadyRegisteredError()));
 
     const result = await sut.handle(validParams);
@@ -165,7 +165,7 @@ describe('RegisterUser Controller', () => {
     });
   });
 
-  it('should return status CREATED and "user successfully created" message when returns success', async () => {
+  it('should return status CREATED(201) and "user successfully created" message when returns success', async () => {
     const result = await sut.handle(validParams);
 
     expect(result).toEqual({
