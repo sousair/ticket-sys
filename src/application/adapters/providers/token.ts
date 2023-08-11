@@ -1,4 +1,4 @@
-import { Either } from '@utils/either';
+import { Either } from '@shared/either';
 import { InternalError } from '@application/errors/internal-error';
 import { InvalidTokenError } from '@application/errors/invalid-token';
 

@@ -1,6 +1,6 @@
 import { ISendValidationEmail } from '@application/usecases/send-validation-email/send-validation-email';
 import { SendUserValidationEmailEventHandler } from '../send-user-validation-email';
-import { failure, success } from '@utils/either';
+import { failure, success } from '@shared/either';
 import { UserCreatedEventPayload } from '@domain/events/user-created';
 import { User } from '@entities/user';
 import { Email } from '@entities/email';

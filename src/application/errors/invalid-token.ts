@@ -1,4 +1,4 @@
-import { CustomError } from '@utils/custom-error';
+import { CustomError } from '@shared/custom-error';
 
 export class InvalidTokenError extends CustomError {
   constructor() {

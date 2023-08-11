@@ -1,7 +1,7 @@
 import { ITokenProvider, TokenTypes } from '@application/adapters/providers/token';
 import { ISendValidationEmail } from './send-validation-email';
-import { MINUTE_IN_MS } from '@utils/time';
-import { failure, success } from '@utils/either';
+import { MINUTE_IN_MS } from '@shared/time';
+import { failure, success } from '@shared/either';
 import { IEmailProvider } from '@application/adapters/providers/email';
 
 export class SendUserValidationEmail implements ISendValidationEmail {

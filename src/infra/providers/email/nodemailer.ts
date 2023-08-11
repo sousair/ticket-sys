@@ -1,6 +1,6 @@
 import { IEmailProvider } from '@application/adapters/providers/email';
 import { EmailSendingError } from '@application/errors/email-sending';
-import { failure, success } from '@utils/either';
+import { failure, success } from '@shared/either';
 import nodemailer from 'nodemailer';
 
 export type NodemailerConfigs = {

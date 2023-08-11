@@ -1,5 +1,5 @@
 import { User } from '@entities/user';
-import { IEvent } from '@utils/interfaces/event';
+import { IEvent } from '@shared/interfaces/event';
 
 export type UserEmailValidatedEventPayload = {
   user: User;

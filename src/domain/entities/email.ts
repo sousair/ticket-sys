@@ -1,5 +1,5 @@
 import { InvalidEmailError } from '@domain/errors/invalid-email';
-import { Either, failure, success } from '@utils/either';
+import { Either, failure, success } from '@shared/either';
 
 export class Email {
   readonly value: string;

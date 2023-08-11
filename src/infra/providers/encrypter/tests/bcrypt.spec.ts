@@ -1,7 +1,7 @@
 import { InternalError } from '@application/errors/internal-error';
 import { BcryptEncrypterProvider } from '../bcrypt';
 import { UserPassword } from '@entities/user-password';
-import { Failure, Success } from '@utils/either';
+import { Failure, Success } from '@shared/either';
 import bcrypt from 'bcrypt';
 
 jest.mock('bcrypt', () => ({

@@ -1,7 +1,7 @@
 import { ITokenProvider, TokenTypes } from '@application/adapters/providers/token';
 import { InternalError } from '@application/errors/internal-error';
-import { Failure, Success } from '@utils/either';
-import { MINUTE_IN_MS } from '@utils/time';
+import { Failure, Success } from '@shared/either';
+import { MINUTE_IN_MS } from '@shared/time';
 import jsonwebtoken, { Jwt } from 'jsonwebtoken';
 import { JSONWebTokenConfigs, JSONWebTokenProvider } from '../jsonwebtoken';
 import { InvalidTokenError } from '@application/errors/invalid-token';

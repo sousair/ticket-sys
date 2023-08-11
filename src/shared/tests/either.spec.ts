@@ -1,4 +1,4 @@
-import { failure, Failure, success, Success } from '@utils/either';
+import { failure, Failure, success, Success } from '@shared/either';
 
 describe('Either', () => {
   type TestFailure = { failure: string };

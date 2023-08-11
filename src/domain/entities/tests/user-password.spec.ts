@@ -1,6 +1,6 @@
 import { InvalidUserPasswordError } from '@domain/errors/invalid-user-password';
 import { UserPassword } from '@entities/user-password';
-import { Failure, Success } from '@utils/either';
+import { Failure, Success } from '@shared/either';
 
 describe('UserPassword Entity', () => {
   describe('validate', () => {

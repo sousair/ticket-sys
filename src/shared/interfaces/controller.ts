@@ -1,4 +1,4 @@
-import { HttpStatusCode } from '@utils/http-status-code';
+import { HttpStatusCode } from '@shared/http-status-code';
 
 export interface IController<ExecuteParams, ResponseAdditionalData> {
   handle(params: ExecuteParams): Promise<IControllerResponse<ResponseAdditionalData>>;

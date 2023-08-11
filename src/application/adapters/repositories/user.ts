@@ -1,7 +1,7 @@
 import { InternalError } from '@application/errors/internal-error';
 import { Email } from '@entities/email';
 import { User } from '@entities/user';
-import { Either } from '@utils/either';
+import { Either } from '@shared/either';
 
 export interface IUserRepository {
   findOneByEmail(email: Email): Promise<User | null>;

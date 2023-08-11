@@ -3,7 +3,7 @@ import nodemailer from 'nodemailer';
 import { NodemailerProvider } from '../nodemailer';
 import { NodemailerConfigs } from './../nodemailer';
 import { Email } from '@entities/email';
-import { Failure, Success } from '@utils/either';
+import { Failure, Success } from '@shared/either';
 import { EmailSendingError } from '@application/errors/email-sending';
 
 jest.mock('nodemailer', () => ({

@@ -1,6 +1,6 @@
 import { EmailSendingError } from '@application/errors/email-sending';
 import { Email } from '@entities/email';
-import { Either } from '@utils/either';
+import { Either } from '@shared/either';
 
 export interface IEmailProvider {
   sendMail(params: IEmailProvider.Params): IEmailProvider.Result;

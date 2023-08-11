@@ -1,4 +1,4 @@
-import { IController } from '@utils/interfaces/controller';
+import { IController } from '@shared/interfaces/controller';
 import { Request, Response } from 'express';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type

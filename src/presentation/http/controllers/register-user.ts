@@ -2,8 +2,8 @@ import { IRegisterUser } from '@application/usecases/register-user/register-user
 import { Email } from '@entities/email';
 import { User } from '@entities/user';
 import { UserPassword } from '@entities/user-password';
-import { HttpStatusCode } from '@utils/http-status-code';
-import { IController, IControllerResponse } from '@utils/interfaces/controller';
+import { HttpStatusCode } from '@shared/http-status-code';
+import { IController, IControllerResponse } from '@shared/interfaces/controller';
 
 export namespace RegisterUserController {
   export type Params = {

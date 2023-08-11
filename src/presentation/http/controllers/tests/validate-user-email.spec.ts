@@ -3,9 +3,9 @@ import { InvalidTokenError } from '@application/errors/invalid-token';
 import { TokenExpiredError } from '@application/errors/token-expired';
 import { UserNotFoundError } from '@application/errors/user-not-found';
 import { IValidateUserEmail } from '@application/usecases/validate-user-email/validate-user-email';
-import { CustomError } from '@utils/custom-error';
-import { failure, success } from '@utils/either';
-import { HttpStatusCode } from '@utils/http-status-code';
+import { CustomError } from '@shared/custom-error';
+import { failure, success } from '@shared/either';
+import { HttpStatusCode } from '@shared/http-status-code';
 import { ValidateUserEmailController } from '../validate-user-email';
 
 describe('ValidateUserEmail Controller', () => {

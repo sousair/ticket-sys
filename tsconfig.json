@@ -16,7 +16,7 @@
       "@entities/*": ["./src/domain/entities/*"],
       "@domain/*": ["./src/domain/*"],
       "@application/*": ["./src/application/*"],
-      "@utils/*": ["./src/utils/*"],
+      "@shared/*": ["./src/shared/*"],
       "@infra/*": ["./src/infra/*"],
       "@main/*": ["./src/main/*"],
       "@presentation/*": ["./src/presentation/*"]

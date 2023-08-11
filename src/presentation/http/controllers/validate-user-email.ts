@@ -1,6 +1,6 @@
 import { IValidateUserEmail } from '@application/usecases/validate-user-email/validate-user-email';
-import { HttpStatusCode } from '@utils/http-status-code';
-import { IController, IControllerResponse } from '@utils/interfaces/controller';
+import { HttpStatusCode } from '@shared/http-status-code';
+import { IController, IControllerResponse } from '@shared/interfaces/controller';
 
 export namespace ValidateUserEmailController {
   export type Params = {

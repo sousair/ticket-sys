@@ -2,7 +2,7 @@ import { InvalidEmailError } from '@domain/errors/invalid-email';
 import { InvalidUserError } from '@domain/errors/invalid-user';
 import { Email } from '@entities/email';
 import { User } from '@entities/user';
-import { Failure, Success } from '@utils/either';
+import { Failure, Success } from '@shared/either';
 
 describe('User Entity', () => {
   const validUserData = <User>{

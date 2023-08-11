@@ -1,7 +1,7 @@
 import { IEncrypterProvider } from '@application/adapters/providers/encrypter';
 import { InternalError } from '@application/errors/internal-error';
 import { UserPassword } from '@entities/user-password';
-import { Either, failure, success } from '@utils/either';
+import { Either, failure, success } from '@shared/either';
 import bcrypt from 'bcrypt';
 
 export class BcryptEncrypterProvider implements IEncrypterProvider {

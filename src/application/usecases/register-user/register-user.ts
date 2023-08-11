@@ -5,7 +5,7 @@ import { InvalidUserError } from '@domain/errors/invalid-user';
 import { Email } from '@entities/email';
 import { User } from '@entities/user';
 import { UserPassword } from '@entities/user-password';
-import { Either } from '@utils/either';
+import { Either } from '@shared/either';
 
 export interface IRegisterUser {
   register(params: IRegisterUser.Params): IRegisterUser.Result;

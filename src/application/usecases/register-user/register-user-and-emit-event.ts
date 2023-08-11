@@ -5,7 +5,7 @@ import { IUserRepository } from '@application/adapters/repositories/user';
 import { UserAlreadyRegisteredError } from '@application/errors/user-already-registered';
 import { UserCreatedEvent, UserCreatedEventPayload } from '@domain/events/user-created';
 import { User } from '@entities/user';
-import { failure, success } from '@utils/either';
+import { failure, success } from '@shared/either';
 import { IRegisterUser } from './register-user';
 
 export class RegisterUserAndEmitEvent implements IRegisterUser {

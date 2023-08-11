@@ -1,6 +1,6 @@
 import { InvalidEmailError } from '@domain/errors/invalid-email';
 import { Email } from '@entities/email';
-import { Failure, Success } from '@utils/either';
+import { Failure, Success } from '@shared/either';
 
 describe('Email Entity', () => {
   describe('validate', () => {

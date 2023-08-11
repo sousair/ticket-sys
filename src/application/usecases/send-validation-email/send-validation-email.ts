@@ -1,7 +1,7 @@
 import { EmailSendingError } from '@application/errors/email-sending';
 import { InternalError } from '@application/errors/internal-error';
 import { Email } from '@entities/email';
-import { Either } from '@utils/either';
+import { Either } from '@shared/either';
 
 export interface ISendValidationEmail {
   send(params: ISendValidationEmail.Params): ISendValidationEmail.Result;

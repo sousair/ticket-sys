@@ -8,8 +8,8 @@ import { UserNotFoundError } from '@application/errors/user-not-found';
 import { UserEmailValidatedEvent } from '@domain/events/user-email-validated';
 import { Email } from '@entities/email';
 import { User } from '@entities/user';
-import { Either, Failure, Success, failure, success } from '@utils/either';
-import { MINUTE_IN_MS } from '@utils/time';
+import { Either, Failure, Success, failure, success } from '@shared/either';
+import { MINUTE_IN_MS } from '@shared/time';
 import { IValidateUserEmail } from '../validate-user-email';
 import { ValidateUserEmailAndEmitEvent } from '../validate-user-email-and-emit-event';
 

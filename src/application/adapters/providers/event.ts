@@ -1,5 +1,5 @@
 
-import { IEvent } from '@utils/interfaces/event';
+import { IEvent } from '@shared/interfaces/event';
 
 export interface IEventProvider {
   emit<Event>(params: IEventProvider.Params<Event>): IEventProvider.Result;

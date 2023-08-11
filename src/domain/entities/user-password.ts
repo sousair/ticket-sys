@@ -1,5 +1,5 @@
 import { InvalidUserPasswordError } from '@domain/errors/invalid-user-password';
-import { Either, failure, success } from '@utils/either';
+import { Either, failure, success } from '@shared/either';
 
 export class UserPassword {
   readonly value: string;

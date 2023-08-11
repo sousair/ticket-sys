@@ -7,9 +7,9 @@ import { InvalidUserPasswordError } from '@domain/errors/invalid-user-password';
 import { Email } from '@entities/email';
 import { User } from '@entities/user';
 import { UserPassword } from '@entities/user-password';
-import { CustomError } from '@utils/custom-error';
-import { failure, success } from '@utils/either';
-import { HttpStatusCode } from '@utils/http-status-code';
+import { CustomError } from '@shared/custom-error';
+import { failure, success } from '@shared/either';
+import { HttpStatusCode } from '@shared/http-status-code';
 import { RegisterUserController } from '../register-user';
 
 describe('RegisterUser Controller', () => {

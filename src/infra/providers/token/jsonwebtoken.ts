@@ -1,7 +1,7 @@
 import { ITokenProvider, TokenTypes } from '@application/adapters/providers/token';
 import { InternalError } from '@application/errors/internal-error';
 import { InvalidTokenError } from '@application/errors/invalid-token';
-import { failure, success } from '@utils/either';
+import { failure, success } from '@shared/either';
 import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
 
 export type JSONWebTokenConfigs = {

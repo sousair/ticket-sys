@@ -9,7 +9,7 @@ import { UserCreatedEvent } from '@domain/events/user-created';
 import { Email } from '@entities/email';
 import { User } from '@entities/user';
 import { UserPassword } from '@entities/user-password';
-import { Either, Failure, Success, failure, success } from '@utils/either';
+import { Either, Failure, Success, failure, success } from '@shared/either';
 import { IRegisterUser } from '../register-user';
 import { RegisterUserAndEmitEvent } from '../register-user-and-emit-event';
 

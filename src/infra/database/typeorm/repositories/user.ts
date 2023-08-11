@@ -2,7 +2,7 @@ import { IUserRepository } from '@application/adapters/repositories/user';
 import { InternalError } from '@application/errors/internal-error';
 import { Email } from '@entities/email';
 import { User } from '@entities/user';
-import { Either, failure, success } from '@utils/either';
+import { Either, failure, success } from '@shared/either';
 import { Repository } from 'typeorm';
 import { TypeORMConnectionManager } from '../connection-manager';
 import { UserEntity } from '../entities/user';

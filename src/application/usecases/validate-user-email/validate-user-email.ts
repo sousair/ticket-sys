@@ -2,7 +2,7 @@ import { InternalError } from '@application/errors/internal-error';
 import { InvalidTokenError } from '@application/errors/invalid-token';
 import { TokenExpiredError } from '@application/errors/token-expired';
 import { UserNotFoundError } from '@application/errors/user-not-found';
-import { Either } from '@utils/either';
+import { Either } from '@shared/either';
 
 export interface IValidateUserEmail {
   validate(params: IValidateUserEmail.Params): IValidateUserEmail.Result;
