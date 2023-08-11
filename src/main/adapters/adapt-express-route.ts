@@ -1,12 +1,12 @@
-import { IController } from '@shared/interfaces/controller';
+import { HttpRequest, IController } from '@shared/interfaces/controller';
 import { Request, Response } from 'express';
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export function adaptControllerToExpressRoute<Params, Res>(controller: IController<Params, Res>) {
+export function adaptControllerToExpressRoute(controller: IController<unknown, unknown>) {
   return async (req: Request, res: Response): Promise<Response> => {
-    const params = {
-      ...req.body,
-      ...req.params,
+    const params: HttpRequest = {
+      body: req.body,
+      headers: req.headers,
+      params: req.params,
     };
 
     const { status, data } = await controller.handle(params);
