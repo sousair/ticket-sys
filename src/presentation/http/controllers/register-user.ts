@@ -7,8 +7,10 @@ import { IController, IControllerResponse } from '@shared/interfaces/controller'
 
 export namespace RegisterUserController {
   export type Params = {
-    email: string;
-    password: string;
+    body: {
+      email: string;
+      password: string;
+    };
   };
 
   export type ResultData = {
@@ -53,7 +55,8 @@ export class RegisterUserController implements IController<RegisterUserControlle
 
   constructor(private readonly registerUser: IRegisterUser) {}
 
-  async handle({ email, password }: RegisterUserController.Params): Promise<IControllerResponse<RegisterUserController.ResultData>> {
+  async handle({ body }: RegisterUserController.Params): Promise<IControllerResponse<RegisterUserController.ResultData>> {
+    const { email, password } = body;
     const emailRes = Email.create(email);
     if (emailRes.isFailure()) {
       return {

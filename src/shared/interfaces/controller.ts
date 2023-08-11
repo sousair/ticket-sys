@@ -1,14 +1,31 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpStatusCode } from '@shared/http-status-code';
 
-export interface IController<ExecuteParams, ResponseAdditionalData> {
-  handle(params: ExecuteParams): Promise<IControllerResponse<ResponseAdditionalData>>;
+export interface IController<HandleParams extends HttpRequest, ResponseData = ResponseDataT> {
+  handle(params: HandleParams): Promise<IControllerResponse<ResponseData>>;
 }
 
-export interface IControllerResponse<
-  Data = {
-    [key: string]: unknown;
-  }
-> {
+export type HttpRequest = {
+  body?: {
+    [key: string]: any;
+  };
+  headers?: {
+    [key: string]: any;
+  };
+  params?: {
+    [key: string]: any;
+  };
+};
+
+type Message = {
+  message: string;
+};
+
+type ResponseDataT = {
+  [key: string]: any;
+};
+
+export interface IControllerResponse<Data = ResponseDataT> {
   status: HttpStatusCode;
-  data: { message: string } & Partial<Data>;
+  data: Message | (Data & Message);
 }

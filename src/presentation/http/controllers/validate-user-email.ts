@@ -4,7 +4,9 @@ import { IController, IControllerResponse } from '@shared/interfaces/controller'
 
 export namespace ValidateUserEmailController {
   export type Params = {
-    token: string;
+    params: {
+      token: string;
+    }
   };
 
   export type ResultData = {
@@ -49,7 +51,8 @@ export class ValidateUserEmailController implements IController<ValidateUserEmai
 
   constructor(private readonly validateUserEmail: IValidateUserEmail) {}
 
-  async handle({ token }: ValidateUserEmailController.Params): Promise<IControllerResponse<ValidateUserEmailController.ResultData>> {
+  async handle({ params }: ValidateUserEmailController.Params): Promise<IControllerResponse<ValidateUserEmailController.ResultData>> {
+    const { token } = params;
     const validateUserEmailRes = await this.validateUserEmail.validate({ token });
 
     if (validateUserEmailRes.isFailure()) {

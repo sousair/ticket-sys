@@ -27,7 +27,9 @@ describe('ValidateUserEmail Controller', () => {
     sut = new ValidateUserEmailController(validateUserEmail);
 
     validParams = {
-      token: 'validToken',
+      params: {
+        token: 'validToken',
+      }
     };
   });
 
@@ -37,7 +39,7 @@ describe('ValidateUserEmail Controller', () => {
     await sut.handle(validParams);
 
     expect(validateUserEmailSpy).toHaveBeenCalledTimes(1);
-    expect(validateUserEmailSpy).toHaveBeenCalledWith(validParams);
+    expect(validateUserEmailSpy).toHaveBeenCalledWith(validParams.params);
   });
 
   it('should return UNAUTHORIZED(401) and "invalid token" message when ValidateUserEmail returns a failure and InvalidTokenError', async () => {

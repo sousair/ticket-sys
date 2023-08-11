@@ -31,8 +31,10 @@ describe('RegisterUser Controller', () => {
     sut = new RegisterUserController(registerUser);
 
     validParams = {
-      email: 'validEmail@domain.com',
-      password: 'v4l!dPass',
+      body: {
+        email: 'validEmail@domain.com',
+        password: 'v4l!dPass',
+      },
     };
   });
 
@@ -42,7 +44,7 @@ describe('RegisterUser Controller', () => {
     await sut.handle(validParams);
 
     expect(emailSpy).toHaveBeenCalledTimes(1);
-    expect(emailSpy).toHaveBeenCalledWith(validParams.email);
+    expect(emailSpy).toHaveBeenCalledWith(validParams.body.email);
   });
 
   it('should return status BAD_REQUEST(400) and message on InvalidEmailError when Email.create returns failure', async () => {
@@ -64,7 +66,7 @@ describe('RegisterUser Controller', () => {
     await sut.handle(validParams);
 
     expect(userPassSpy).toHaveBeenCalledTimes(1);
-    expect(userPassSpy).toHaveBeenCalledWith(validParams.password);
+    expect(userPassSpy).toHaveBeenCalledWith(validParams.body.password);
   });
 
   it('should return status BAD_REQUEST(400) and message on InvalidUserPasswordError when InvalidUserPasswordError.create returns failure', async () => {
@@ -87,8 +89,8 @@ describe('RegisterUser Controller', () => {
 
     expect(registerUserSpy).toHaveBeenCalledTimes(1);
     expect(registerUserSpy).toHaveBeenCalledWith({
-      email: new Email(validParams.email),
-      password: new UserPassword(validParams.password),
+      email: new Email(validParams.body.email),
+      password: new UserPassword(validParams.body.password),
     });
   });
 
