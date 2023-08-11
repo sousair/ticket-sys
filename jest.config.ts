@@ -30,7 +30,7 @@ export default {
   // An array of regexp pattern strings used to skip coverage collection
   coveragePathIgnorePatterns: [
     'src/application/adapters',
-    'src/utils/interfaces',
+    'src/shared/interfaces',
     'src/infra/database/typeorm/entities',
     'src/infra/database/typeorm/migrations',
   ],
