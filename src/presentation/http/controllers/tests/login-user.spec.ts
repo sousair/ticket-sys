@@ -35,7 +35,7 @@ describe('LoginUser Controller', () => {
         password: 'userPassword',
       },
       headers: {
-        'x-forwarded-for': '0.0.0.0',
+        ip: '0.0.0.0',
       },
     };
   });
@@ -69,7 +69,7 @@ describe('LoginUser Controller', () => {
 
     expect(loginUserSpy).toHaveBeenCalledTimes(1);
     expect(loginUserSpy).toHaveBeenCalledWith({
-      ip: validParams.headers['x-forwarded-for'],
+      ip: validParams.headers.ip,
       email: new Email(validParams.body.email),
       password: validParams.body.password,
     });

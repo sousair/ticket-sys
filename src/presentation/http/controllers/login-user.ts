@@ -10,7 +10,7 @@ export namespace LoginUserController {
       password: string;
     };
     headers: {
-      'x-forwarded-for': string;
+      ip: string;
     };
   };
 
@@ -54,7 +54,7 @@ export class LoginUserController implements IController<LoginUserController.Para
 
   async handle({ body, headers }: LoginUserController.Params): Promise<IControllerResponse<LoginUserController.ResultData>> {
     const { email, password } = body;
-    const { 'x-forwarded-for': ipHeader } = headers;
+    const { ip } = headers;
 
     const emailRes = Email.create(email);
     if (emailRes.isFailure()) {
@@ -69,7 +69,7 @@ export class LoginUserController implements IController<LoginUserController.Para
     const emailInstance = emailRes.value;
 
     const loginUserRes = await this.loginUser.login({
-      ip: ipHeader,
+      ip,
       email: emailInstance,
       password,
     });
