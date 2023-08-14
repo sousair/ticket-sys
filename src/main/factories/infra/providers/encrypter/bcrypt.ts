@@ -7,7 +7,7 @@ export class BcryptEncrypterProviderFactory {
   static getInstance(): BcryptEncrypterProvider {
     if (this.instance) return this.instance;
 
-    this.instance = new BcryptEncrypterProvider(EnvConfig.BCRYPT_PASSWORD_SALT_ROUNTS);
+    this.instance = new BcryptEncrypterProvider(EnvConfig.BCRYPT_PASSWORD_SALT_ROUNDS);
     return this.instance;
   }
 }

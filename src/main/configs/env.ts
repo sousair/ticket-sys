@@ -9,7 +9,7 @@ export class EnvConfig {
   NODEMAILER_USER_PASSWORD: string;
 
   // * BCrypt configs
-  BCRYPT_PASSWORD_SALT_ROUNTS: number;
+  BCRYPT_PASSWORD_SALT_ROUNDS: number;
 
   // * JWT configs
   VALIDATION_EMAIL_JWT_SECRET: string;
@@ -46,8 +46,8 @@ export class EnvConfig {
     return process.env.NODEMAILER_USER_PASSWORD;
   }
 
-  static get BCRYPT_PASSWORD_SALT_ROUNTS(): number {
-    return Number(process.env.BCRYPT_PASSWORD_SALT_ROUNTS);
+  static get BCRYPT_PASSWORD_SALT_ROUNDS(): number {
+    return Number(process.env.BCRYPT_PASSWORD_SALT_ROUNDS);
   }
 
   static get VALIDATION_EMAIL_JWT_SECRET(): string {
