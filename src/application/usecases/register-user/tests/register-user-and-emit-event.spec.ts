@@ -5,7 +5,7 @@ import { IUserRepository } from '@application/adapters/repositories/user';
 import { InternalError } from '@application/errors/internal-error';
 import { UserAlreadyRegisteredError } from '@application/errors/user-already-registered';
 import { InvalidUserError } from '@domain/errors/invalid-user';
-import { UserCreatedEvent } from '@domain/events/user-created';
+import { UserCreatedEvent } from '@application/events/user-created';
 import { Email } from '@entities/email';
 import { User } from '@entities/user';
 import { UserPassword } from '@entities/user-password';

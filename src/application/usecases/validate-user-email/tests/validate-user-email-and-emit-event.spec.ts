@@ -5,7 +5,7 @@ import { InternalError } from '@application/errors/internal-error';
 import { InvalidTokenError } from '@application/errors/invalid-token';
 import { TokenExpiredError } from '@application/errors/token-expired';
 import { UserNotFoundError } from '@application/errors/user-not-found';
-import { UserEmailValidatedEvent } from '@domain/events/user-email-validated';
+import { UserEmailValidatedEvent } from '@application/events/user-email-validated';
 import { Email } from '@entities/email';
 import { User } from '@entities/user';
 import { Either, Failure, Success, failure, success } from '@shared/either';

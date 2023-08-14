@@ -1,5 +1,5 @@
 import { ISendValidationEmail } from '@application/usecases/send-validation-email/send-validation-email';
-import { UserCreatedEventPayload } from '@domain/events/user-created';
+import { UserCreatedEventPayload } from '@application/events/user-created';
 import { EventHandler } from '@shared/decorators/event-handler';
 import { IEventHandler } from '@shared/interfaces/event-handler';
 

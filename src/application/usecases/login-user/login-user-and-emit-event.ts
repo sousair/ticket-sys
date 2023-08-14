@@ -4,7 +4,7 @@ import { ITokenProvider, TokenTypes } from '@application/adapters/providers/toke
 import { IUserRepository } from '@application/adapters/repositories/user';
 import { InvalidPasswordError } from '@application/errors/invalid-password';
 import { UserNotFoundError } from '@application/errors/user-not-found';
-import { UserLoginSuccessEvent, UserLoginSuccessEventPayload } from '@domain/events/user-login-success';
+import { UserLoginSuccessEvent, UserLoginSuccessEventPayload } from '@application/events/user-login-success';
 import { failure, success } from '@shared/either';
 import { HOUR_IN_MS } from '@shared/time';
 import { ILoginUser } from './login-user';

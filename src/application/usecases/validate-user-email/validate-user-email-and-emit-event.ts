@@ -4,7 +4,7 @@ import { IUserRepository } from '@application/adapters/repositories/user';
 import { InternalError } from '@application/errors/internal-error';
 import { TokenExpiredError } from '@application/errors/token-expired';
 import { UserNotFoundError } from '@application/errors/user-not-found';
-import { UserEmailValidatedEvent, UserEmailValidatedEventPayload } from '@domain/events/user-email-validated';
+import { UserEmailValidatedEvent, UserEmailValidatedEventPayload } from '@application/events/user-email-validated';
 import { failure, success } from '@shared/either';
 import { IValidateUserEmail } from './validate-user-email';
 

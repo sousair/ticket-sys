@@ -5,7 +5,7 @@ import { IUserRepository } from '@application/adapters/repositories/user';
 import { InternalError } from '@application/errors/internal-error';
 import { InvalidPasswordError } from '@application/errors/invalid-password';
 import { UserNotFoundError } from '@application/errors/user-not-found';
-import { UserLoginSuccessEvent } from '@domain/events/user-login-success';
+import { UserLoginSuccessEvent } from '@application/events/user-login-success';
 import { Email } from '@entities/email';
 import { User } from '@entities/user';
 import { Either, Failure, Success, failure, success } from '@shared/either';

@@ -3,7 +3,7 @@ import { IEventProvider } from '@application/adapters/providers/event';
 import { IUniqueIDGeneratorProvider } from '@application/adapters/providers/unique-id-generator';
 import { IUserRepository } from '@application/adapters/repositories/user';
 import { UserAlreadyRegisteredError } from '@application/errors/user-already-registered';
-import { UserCreatedEvent, UserCreatedEventPayload } from '@domain/events/user-created';
+import { UserCreatedEvent, UserCreatedEventPayload } from '@application/events/user-created';
 import { User } from '@entities/user';
 import { failure, success } from '@shared/either';
 import { IRegisterUser } from './register-user';
