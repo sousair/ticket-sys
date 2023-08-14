@@ -1,5 +1,6 @@
-import { Express, json } from 'express';
+import { Express } from 'express';
+import { jsonParserMiddleware } from './json';
 
 export function setupMiddlewares(app: Express): void {
-  app.use(json());
+  app.use(jsonParserMiddleware);
 }
