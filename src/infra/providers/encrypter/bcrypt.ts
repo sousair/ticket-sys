@@ -20,4 +20,16 @@ export class BcryptEncrypterProvider implements IEncrypterProvider {
       return failure(new InternalError('error hashing value'));
     }
   }
+
+  compare(value: string, hash: string): Either<InternalError, boolean> {
+    try {
+      const result = bcrypt.compareSync(value, hash);
+
+      return success(result);
+    } catch (err) {
+      console.error(err);
+
+      return failure(new InternalError('error comparing hashes'));
+    }
+  }
 }

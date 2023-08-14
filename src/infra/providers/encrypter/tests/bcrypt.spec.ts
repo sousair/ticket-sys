@@ -23,7 +23,7 @@ describe('BcryptEncrypter Provider', () => {
 
   describe('hash', () => {
     const validParams = 'valueToHash';
-
+    
     it('should call bcrypt.hashSync with correct values', () => {
       const bcryptSpy = jest.spyOn(bcrypt, 'hashSync');
 
@@ -58,6 +58,46 @@ describe('BcryptEncrypter Provider', () => {
 
       expect(result).toBeInstanceOf(Success);
       expect(result.value).toStrictEqual('hashedValue');
+    });
+  });
+
+  describe('compare', () => {
+    const validParams = { value: 'valueToHash', hash: 'hashedValue' };
+
+    it('should call bcrypt.compareSync with correct values', () => {
+      const bcryptSpy = jest.spyOn(bcrypt, 'compareSync');
+
+      sut.compare(validParams.value, validParams.hash);
+
+      expect(bcryptSpy).toHaveBeenCalledTimes(1);
+      expect(bcryptSpy).toHaveBeenCalledWith(validParams.value, validParams.hash);
+    });
+
+    it('should return Failure and InternalError when bcrypt.compareSync throws', () => {
+      jest.spyOn(bcrypt, 'compareSync').mockImplementationOnce(() => {
+        throw new Error();
+      });
+
+      const result = sut.compare(validParams.value, validParams.hash);
+
+      expect(result).toBeInstanceOf(Failure);
+      expect(result.value).toBeInstanceOf(InternalError);
+    });
+
+    it('should return Success and false when bcrypt.compareSync returns false', () => {
+      jest.spyOn(bcrypt, 'compareSync').mockReturnValueOnce(false);
+
+      const result = sut.compare(validParams.value, validParams.hash);
+
+      expect(result).toBeInstanceOf(Success);
+      expect(result.value).toStrictEqual(false);
+    });
+
+    it('should return Success and true when bcrypt.compareSync returns true', () => {
+      const result = sut.compare(validParams.value, validParams.hash);
+
+      expect(result).toBeInstanceOf(Success);
+      expect(result.value).toStrictEqual(true);
     });
   });
 });
