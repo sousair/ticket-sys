@@ -1,60 +1,63 @@
 import { InternalError } from '@application/errors/internal-error';
-import { BcryptEncrypterProvider } from '../bcrypt';
-import { UserPassword } from '@entities/user-password';
 import { Failure, Success } from '@shared/either';
 import bcrypt from 'bcrypt';
+import { BcryptEncrypterProvider } from '../bcrypt';
 
 jest.mock('bcrypt', () => ({
   hashSync(): string {
-    return 'hashedPassword';
-  }
+    return 'hashedValue';
+  },
+  compareSync(): boolean {
+    return true;
+  },
 }));
 
 describe('BcryptEncrypter Provider', () => {
-
   let sut: BcryptEncrypterProvider;
-  
-  const mockedUserPassSalt = 10;
 
-  const validParams = new UserPassword('v4l!dPass');
+  const mockedUserPassSalt = 10;
 
   beforeEach(() => {
     sut = new BcryptEncrypterProvider(mockedUserPassSalt);
   });
 
-  it('should call bcrypt.hashSync with correct values', () => {
-    const bcryptSpy = jest.spyOn(bcrypt, 'hashSync');
+  describe('hash', () => {
+    const validParams = 'valueToHash';
 
-    sut.encryptUserPassword(validParams);
+    it('should call bcrypt.hashSync with correct values', () => {
+      const bcryptSpy = jest.spyOn(bcrypt, 'hashSync');
 
-    expect(bcryptSpy).toHaveBeenCalledTimes(1);
-    expect(bcryptSpy).toHaveBeenCalledWith(validParams.value, mockedUserPassSalt);
-  });
+      sut.encrypt(validParams);
 
-  it('should return Failure and InternalError when bcrypt.hashSync throws', () => {
-    jest.spyOn(bcrypt, 'hashSync').mockImplementationOnce(() => {
-      throw new Error();
+      expect(bcryptSpy).toHaveBeenCalledTimes(1);
+      expect(bcryptSpy).toHaveBeenCalledWith(validParams, mockedUserPassSalt);
     });
 
-    const result = sut.encryptUserPassword(validParams);
+    it('should return Failure and InternalError when bcrypt.hashSync throws', () => {
+      jest.spyOn(bcrypt, 'hashSync').mockImplementationOnce(() => {
+        throw new Error();
+      });
 
-    expect(result).toBeInstanceOf(Failure);
-    expect(result.value).toBeInstanceOf(InternalError);
-  });
+      const result = sut.encrypt(validParams);
 
-  it('should return Failure and InternalError when bcrypt.hashSync returns an empty string', () => {
-    jest.spyOn(bcrypt, 'hashSync').mockReturnValueOnce('');
-    
-    const result = sut.encryptUserPassword(validParams);
+      expect(result).toBeInstanceOf(Failure);
+      expect(result.value).toBeInstanceOf(InternalError);
+    });
 
-    expect(result).toBeInstanceOf(Failure);
-    expect(result.value).toBeInstanceOf(InternalError);
-  });
+    it('should return Failure and InternalError when bcrypt.hashSync returns an empty string', () => {
+      jest.spyOn(bcrypt, 'hashSync').mockReturnValueOnce('');
 
-  it('should return Success and a hashed password on success', () => {
-    const result = sut.encryptUserPassword(validParams);
+      const result = sut.encrypt(validParams);
 
-    expect(result).toBeInstanceOf(Success);
-    expect(result.value).toStrictEqual('hashedPassword');
+      expect(result).toBeInstanceOf(Failure);
+      expect(result.value).toBeInstanceOf(InternalError);
+    });
+
+    it('should return Success and a hashed string on success', () => {
+      const result = sut.encrypt(validParams);
+
+      expect(result).toBeInstanceOf(Success);
+      expect(result.value).toStrictEqual('hashedValue');
+    });
   });
 });

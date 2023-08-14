@@ -51,8 +51,11 @@ describe('RegisterUserAndEmitEvent UseCase', () => {
     }
 
     class EncrypterProviderStub implements IEncrypterProvider {
-      encryptUserPassword(): Either<InternalError, string> {
+      encrypt(): Either<InternalError, string> {
         return success(mockedHashedPassword);
+      }
+      compare(): Either<InternalError, boolean> {
+        return success(true);
       }
     }
 
@@ -110,17 +113,17 @@ describe('RegisterUserAndEmitEvent UseCase', () => {
     expect(result.value).toBeInstanceOf(UserAlreadyRegisteredError);
   });
 
-  it('should call EncrypterProvider.encryptUserPassword with correct values', async () => {
-    const encrypterProviderSpy = jest.spyOn(encrypterProvider, 'encryptUserPassword');
+  it('should call EncrypterProvider.encrypt with correct values', async () => {
+    const encrypterProviderSpy = jest.spyOn(encrypterProvider, 'encrypt');
 
     await sut.register(validParams);
 
     expect(encrypterProviderSpy).toHaveBeenCalledTimes(1);
-    expect(encrypterProviderSpy).toHaveBeenCalledWith(validParams.password);
+    expect(encrypterProviderSpy).toHaveBeenCalledWith(validParams.password.value);
   });
 
-  it('should return a Failure and InternalError when EncrypterProvider.encryptUserPassword returns a Failure', async () => {
-    jest.spyOn(encrypterProvider, 'encryptUserPassword').mockReturnValueOnce(failure(new InternalError('failed to encrypt user password')));
+  it('should return a Failure and InternalError when EncrypterProvider.encrypt returns a Failure', async () => {
+    jest.spyOn(encrypterProvider, 'encrypt').mockReturnValueOnce(failure(new InternalError('failed to encrypt user password')));
 
     const result = await sut.register(validParams);
 
