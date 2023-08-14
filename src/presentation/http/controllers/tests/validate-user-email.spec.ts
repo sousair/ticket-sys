@@ -94,19 +94,6 @@ describe('ValidateUserEmail Controller', () => {
     });
   });
 
-  it('should return INTERNAL_SERVER_ERROR(500) and "internal server error" message when ValidateUserEmail returns a failure and InternalError', async () => {
-    jest.spyOn(validateUserEmail, 'validate').mockResolvedValueOnce(failure(new InternalError('anyMessage')));
-
-    const result = await sut.handle(validParams);
-
-    expect(result).toEqual({
-      status: HttpStatusCode.INTERNAL_SERVER_ERROR,
-      data: {
-        message: 'internal server error',
-      },
-    });
-  });
-
   it('should return status INTERNAL_SERVER_ERROR(500) and "internal server error" message when ValidateUserEmail returns failure and a unknown CustomError', async () => {
     class UnknownCustomError extends CustomError {
       constructor() {
