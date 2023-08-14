@@ -7,7 +7,7 @@ import { Router } from 'express';
 const userRouter = Router();
 
 userRouter.post('/', adaptControllerToExpressRoute(RegisterUserControllerFactory.getInstance()));
-userRouter.post('/validate-email/:token', adaptControllerToExpressRoute(ValidateUserEmailControllerFactory.getInstance()));
+userRouter.patch('/validate-email/:token', adaptControllerToExpressRoute(ValidateUserEmailControllerFactory.getInstance()));
 userRouter.post('/login', adaptControllerToExpressRoute(LoginUserControllerFactory.getInstance()));
 
 export { userRouter };
