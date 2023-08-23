@@ -4,25 +4,25 @@ import { Failure, Success } from '@shared/either';
 
 describe('Email Entity', () => {
   describe('validate', () => {
-    it('should return false when undefined is sent', () => {
+    it('should return false for undefined', () => {
       const result = Email.validate(undefined);
 
       expect(result).toStrictEqual(false);
     });
 
-    it('should return false when empty string is sent', () => {
+    it('should return false for an empty string', () => {
       const result = Email.validate('');
 
       expect(result).toStrictEqual(false);
     });
 
-    it('should return false when a invalid email is sent', () => {
+    it('should return false for an invalid email', () => {
       const result = Email.validate('invalidEmail');
 
       expect(result).toStrictEqual(false);
     });
 
-    it('should return true when a valid email is sent', () => {
+    it('should return true for a valid email', () => {
       const result = Email.validate('validEmail@domain.com');
 
       expect(result).toStrictEqual(true);
@@ -30,14 +30,14 @@ describe('Email Entity', () => {
   });
 
   describe('create', () => {
-    it('should return a Failure and InvalidEmailError value when a invalid email is sent', () => {
+    it('should return a Failure and InvalidEmailError for an invalid Email', () => {
       const result = Email.create('invalidEmail');
 
       expect(result).toBeInstanceOf(Failure);
       expect(result.value).toBeInstanceOf(InvalidEmailError);
     });
 
-    it('should return a Success and Email value when a invalid email is sent', () => {
+    it('should return a Success and Email entity for a valid Email', () => {
       const result = Email.create('validEmail@domain.com');
 
       expect(result).toBeInstanceOf(Success);

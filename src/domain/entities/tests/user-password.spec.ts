@@ -4,19 +4,19 @@ import { Failure, Success } from '@shared/either';
 
 describe('UserPassword Entity', () => {
   describe('validate', () => {
-    it('should return false when undefined is sent', () => {
+    it('should return false for undefined', () => {
       const result = UserPassword.validate(undefined);
 
       expect(result).toStrictEqual(false);
     });
 
-    it('should return false when empty string is sent', () => {
+    it('should return false for an empty string', () => {
       const result = UserPassword.validate('');
 
       expect(result).toStrictEqual(false);
     });
 
-    it('should return false when sent a password without less than 8 characters', () => {
+    it('should return false for a Password without less than 8 characters', () => {
       const invalidPassword = 'Inv4l!d';
 
       const result = UserPassword.validate(invalidPassword);
@@ -24,7 +24,7 @@ describe('UserPassword Entity', () => {
       expect(result).toStrictEqual(false);
     });
 
-    it('should return false when sent a password with more than 20 characters', () => {
+    it('should return false for a Password with more than 20 characters', () => {
       const invalidPassword = 'Inv4l!dPassword123456';
 
       const result = UserPassword.validate(invalidPassword);
@@ -32,31 +32,31 @@ describe('UserPassword Entity', () => {
       expect(result).toStrictEqual(false);
     });
 
-    it('should return false when sent a password without at least one upper case character', () => {
-      const invalidPassword = 'inv4l!dpass';
+    it('should return false for a Password without at least one upper case character', () => {
+      const invalidPassword = 'inv4l!d pass';
 
       const result = UserPassword.validate(invalidPassword);
 
       expect(result).toStrictEqual(false);
     });
 
-    it('should return false when sent a password without at least one lower case character', () => {
-      const invalidPassword = 'INV4L!DPASS';
+    it('should return false for a Password without at least one lower case character', () => {
+      const invalidPassword = 'INV4L!D PASS';
 
       const result = UserPassword.validate(invalidPassword);
 
       expect(result).toStrictEqual(false);
     });
 
-    it('should return false when sent a password without at least one digit', () => {
-      const invalidPassword = 'Inval!dPass';
+    it('should return false for a Password without at least one digit', () => {
+      const invalidPassword = 'InvalidPass!';
 
       const result = UserPassword.validate(invalidPassword);
 
       expect(result).toStrictEqual(false);
     });
 
-    it('should return false when sent a password without at least one special character', () => {
+    it('should return false for a Password without at least one special character', () => {
       const invalidPassword = 'Inv4lidPass';
 
       const result = UserPassword.validate(invalidPassword);
@@ -64,7 +64,7 @@ describe('UserPassword Entity', () => {
       expect(result).toStrictEqual(false);
     });
 
-    it('should return true when sent a valid password', () => {
+    it('should return true for a valid Password', () => {
       const result = UserPassword.validate('v4l!dPass');
 
       expect(result).toStrictEqual(true);
@@ -72,14 +72,14 @@ describe('UserPassword Entity', () => {
   });
 
   describe('create', () => {
-    it('should return Failure and InvalidUserPasswordError value when a invalid password is sent', () => { 
+    it('should return Failure and InvalidUserPasswordError value for an invalid Password', () => { 
       const result = UserPassword.create('invalidPassword');
 
       expect(result).toBeInstanceOf(Failure);
       expect(result.value).toBeInstanceOf(InvalidUserPasswordError);
     });
 
-    it('should return Success and UserPassword value when a valid password is sent', () => {
+    it('should return Success and UserPassword value for a valid Password', () => {
       const result = UserPassword.create('v4l!dPass');
 
       expect(result).toBeInstanceOf(Success);

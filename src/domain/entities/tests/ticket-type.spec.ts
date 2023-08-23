@@ -10,13 +10,13 @@ describe('TicketType Entity', () => {
   };
 
   describe('validate', () => {
-    it('should return false when receiving an empty object', () => {
+    it('should return false for an empty object', () => {
       const result = TicketType.validate(<TicketType>{});
 
       expect(result).toBeFalsy();
     });
 
-    describe('should return false when an property with undefined field is received', () => {
+    describe('should return false for an TicketType with undefined field', () => {
       for (const key in validParams) {
         it(`#${key}`, () => {
           const result = TicketType.validate({ ...validParams, [key]: undefined });
@@ -26,7 +26,7 @@ describe('TicketType Entity', () => {
       }
     });
 
-    it('should return true when a valid TicketType is received', () => {
+    it('should return true for a valid TicketType', () => {
       const result = TicketType.validate(validParams);
 
       expect(result).toBeTruthy();
@@ -34,14 +34,14 @@ describe('TicketType Entity', () => {
   });
 
   describe('create', () => {
-    it('should return failure and InvalidTicketTypeError when an invalid TicketType is received', () => {
+    it('should return failure and InvalidTicketTypeError for an invalid TicketType', () => {
       const result = TicketType.create({ ...validParams, id: undefined });
 
       expect(result).toBeInstanceOf(Failure);
       expect(result.value).toBeInstanceOf(InvalidTicketTypeError);
     });
 
-    it('should return success and TicketType entity on success', () => {
+    it('should return success and TicketType entity  for a valid TicketType', () => {
       const result = TicketType.create(validParams);
 
       expect(result).toBeInstanceOf(Success);

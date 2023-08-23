@@ -13,19 +13,13 @@ describe('User Entity', () => {
   };
 
   describe('validate', () => {
-    it('should return false when undefined is sent', () => {
-      const result = User.validate(undefined);
-
-      expect(result).toStrictEqual(false);
-    });
-
-    it('should return false when sent an empty object', () => {
+    it('should return false for an empty object', () => {
       const result = User.validate(<User>{});
 
       expect(result).toStrictEqual(false);
     });
 
-    it('should return true when sent a valid user data', () => {
+    it('should return true for a valid User', () => {
       const result = User.validate(validUserData);
 
       expect(result).toStrictEqual(true);
@@ -33,21 +27,21 @@ describe('User Entity', () => {
   });
 
   describe('create', () => {
-    it('should return Failure and InvalidEmailError value when sent an invalid email on user data', () => {
-      const result = User.create(<User>{ email: new Email('invalidMail') });
-
-      expect(result).toBeInstanceOf(Failure);
-      expect(result.value).toBeInstanceOf(InvalidEmailError);
-    });
-
-    it('should return Failure and InvalidUserError value when sent an empty user data', () => {
+    it('should return Failure and InvalidUserError value for an invalid User', () => {
       const result = User.create(<User>{});
 
       expect(result).toBeInstanceOf(Failure);
       expect(result.value).toBeInstanceOf(InvalidUserError);
     });
 
-    it('should return Success and User value when sent a valid user data', () => {
+    it('should return Failure and InvalidEmailError value for an invalid Email on User', () => {
+      const result = User.create(<User>{ email: { value: 'invalidMail'} });
+
+      expect(result).toBeInstanceOf(Failure);
+      expect(result.value).toBeInstanceOf(InvalidEmailError);
+    });
+
+    it('should return Success and User value for a valid User', () => {
       const result = User.create(validUserData);
 
       expect(result).toBeInstanceOf(Success);

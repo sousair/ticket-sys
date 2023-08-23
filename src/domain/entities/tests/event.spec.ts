@@ -4,20 +4,20 @@ import { Failure, Success } from '@shared/either';
 
 describe('Event Entity', () => {
   const validParams: Event = {
-    id: 'vaidId',
+    id: 'validId',
     name: 'eventName',
     description: 'anyDescription',
     address_id: 'addressId',
   };
 
   describe('validate', () => {
-    it('should return false when sent an empty object', () => {
+    it('should return false for an empty object', () => {
       const result = Event.validate(<Event>{});
 
       expect(result).toBeFalsy();
     });
 
-    describe('should return false when an property is send undefined', () => {
+    describe('should return false for an Event with an undefined field', () => {
       for (const key in validParams) {
         it(`#${key}`, () => {
           const result = Event.validate({ ...validParams, [key]: undefined });
@@ -27,7 +27,7 @@ describe('Event Entity', () => {
       }
     });
 
-    it('should return true when sent valid params', () => {
+    it('should return true for a valid Event', () => {
       const result = Event.validate(validParams);
 
       expect(result).toBeTruthy();
@@ -35,14 +35,14 @@ describe('Event Entity', () => {
   });
 
   describe('create', () => {
-    it('should return failure and InvalidEventError when sent an invalid event', () => {
+    it('should return failure and InvalidEventError for an invalid Event', () => {
       const result = Event.create({ ...validParams, name: undefined });
 
       expect(result).toBeInstanceOf(Failure);
       expect(result.value).toBeInstanceOf(InvalidEventError);
     });
 
-    it('should return success and Event on success', () => {
+    it('should return success and Event entity for a valid Event', () => {
       const result = Event.create(validParams);
 
       expect(result).toBeInstanceOf(Success);
