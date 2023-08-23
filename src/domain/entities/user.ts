@@ -2,6 +2,7 @@ import { InvalidEmailError } from '@domain/errors/invalid-email';
 import { InvalidUserError } from '@domain/errors/invalid-user';
 import { Email } from '@entities/email';
 import { Either, failure, success } from '@shared/either';
+import { isEmptyObject } from '@shared/helpers/is-empty-object';
 
 export class User {
   id: string;
@@ -30,9 +31,11 @@ export class User {
       return false;
     }
 
-    if (!Object.keys(user).length) {
+    if (isEmptyObject(user)) {
       return false;
     }
+    
+    // TODO: validate if object has undefined fields
 
     return true;
   }

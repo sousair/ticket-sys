@@ -1,5 +1,7 @@
 import { InvalidAddressError } from '@domain/errors/invalid-address';
 import { Either, failure, success } from '@shared/either';
+import { isEmptyObject } from '@shared/helpers/is-empty-object';
+import { objectHasUndefinedField } from '@shared/helpers/object-has-undefined-field';
 
 export class Address {
   id: string;
@@ -24,11 +26,11 @@ export class Address {
   }
 
   static validate(address: Address): boolean {
-    if (!Object.keys(address).length) {
+    if (isEmptyObject(address)) {
       return false;
     }
 
-    if (Object.values(address).some((value) => value === undefined)) {
+    if (objectHasUndefinedField(address)) {
       return false;
     }
 

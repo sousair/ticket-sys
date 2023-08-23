@@ -1,6 +1,8 @@
 import { Either, failure, success } from '@shared/either';
 import { Address } from './address';
 import { InvalidEventError } from '@domain/errors/invalid-event';
+import { isEmptyObject } from '@shared/helpers/is-empty-object';
+import { objectHasUndefinedField } from '@shared/helpers/object-has-undefined-field';
 
 export class Event {
   id: string;
@@ -23,11 +25,11 @@ export class Event {
   }
 
   static validate(event: Event): boolean {
-    if (!Object.keys(event).length) {
+    if (isEmptyObject(event)) {
       return false;
     }
 
-    if (Object.values(event).some((value) => value === undefined)) {
+    if (objectHasUndefinedField(event)) {
       return false;
     }
 
