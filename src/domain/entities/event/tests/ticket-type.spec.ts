@@ -1,6 +1,6 @@
 import { InvalidTicketTypeError } from '@domain/errors/invalid-ticket-type';
-import { TicketType } from '@entities/ticket-type';
 import { Failure, Success } from '@shared/either';
+import { TicketType } from '../ticket-type';
 
 describe('TicketType Entity', () => {
   const validParams: TicketType = {

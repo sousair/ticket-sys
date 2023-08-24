@@ -1,6 +1,6 @@
 import { InvalidEventTicketTypeError } from '@domain/errors/invalid-event-ticket-type';
-import { EventTicketType } from '@entities/event-ticket-type';
 import { Failure, Success } from '@shared/either';
+import { EventTicketType } from '../event-ticket-type';
 
 describe('EventTicketType', () => {
   const validParams: EventTicketType = {

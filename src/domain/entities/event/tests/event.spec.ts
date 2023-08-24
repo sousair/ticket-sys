@@ -1,6 +1,6 @@
 import { InvalidEventError } from '@domain/errors/invalid-event';
-import { Event } from '@entities/event';
 import { Failure, Success } from '@shared/either';
+import { Event } from '../event';
 
 describe('Event Entity', () => {
   const validParams: Event = {

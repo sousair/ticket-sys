@@ -1,6 +1,6 @@
 import { InvalidEventScheduleError } from '@domain/errors/invalid-event-schedule';
-import { EventSchedule } from '@entities/event-schedule';
 import { Failure, Success } from '@shared/either';
+import { EventSchedule } from '../event-schedule';
 
 describe('EventSchedule Entity', () => {
   const validParams: EventSchedule = {
