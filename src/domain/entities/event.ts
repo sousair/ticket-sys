@@ -8,7 +8,7 @@ export class Event {
   id: string;
   name: string;
   description: string | null;
-  address_id: string;
+  addressId: string;
 
   Address?: Address;
 

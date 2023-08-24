@@ -7,7 +7,7 @@ describe('Event Entity', () => {
     id: 'validId',
     name: 'eventName',
     description: 'anyDescription',
-    address_id: 'addressId',
+    addressId: 'addressId',
   };
 
   describe('validate', () => {
