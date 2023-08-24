@@ -8,6 +8,7 @@ describe('Event Entity', () => {
     name: 'eventName',
     description: 'anyDescription',
     addressId: 'addressId',
+    address: null,
   };
 
   describe('validate', () => {
@@ -25,6 +26,12 @@ describe('Event Entity', () => {
           expect(result).toBeFalsy();
         });
       }
+    });
+
+    it('should return true when address field is null', () => {
+      const result = Event.validate({ ...validParams, address: null });
+
+      expect(result).toBeTruthy();
     });
 
     it('should return true for a valid Event', () => {

@@ -1,16 +1,17 @@
 import { Either, failure, success } from '@shared/either';
-import { Address } from './address';
 import { InvalidEventError } from '@domain/errors/invalid-event';
 import { isEmptyObject } from '@shared/helpers/is-empty-object';
 import { objectHasUndefinedField } from '@shared/helpers/object-has-undefined-field';
+import { Address } from '@entities/address';
 
 export class Event {
   id: string;
   name: string;
-  description: string | null;
+  description: string;
+
   addressId: string;
 
-  Address?: Address;
+  address: Address | null;
 
   private constructor(event: Event) {
     Object.assign(this, event);
