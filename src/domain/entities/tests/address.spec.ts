@@ -1,17 +1,21 @@
 import { InvalidAddressError } from '@domain/errors/invalid-address';
 import { Address } from '@entities/address';
+import { PostalCode } from '@entities/postal-code';
 import { Failure, Success } from '@shared/either';
 
 describe('Address Entity', () => {
   const validParams: Address = {
     id: 'validId',
-    postalCode: '1234123',
     number: '12',
     addressLine: 'complement',
-    street: 'streetName',
-    city: 'cityName',
-    state: 'stateName',
-    country: 'countryName',
+    postalCode: <PostalCode>{
+      id: 'validId',
+      postalCode: 'validPostalCode',
+      street: 'streetName',
+      city: 'cityName',
+      state: 'stateName',
+      country: 'countryName',
+    }
   };
 
   describe('validate', () => {
