@@ -3,6 +3,7 @@ import { InvalidUserError } from '@domain/errors/invalid-user';
 import { Email } from '@entities/email';
 import { Either, failure, success } from '@shared/either';
 import { isEmptyObject } from '@shared/helpers/is-empty-object';
+import { objectHasUndefinedField } from '@shared/helpers/object-has-undefined-field';
 
 export class User {
   id: string;
@@ -27,16 +28,14 @@ export class User {
   }
 
   static validate(user: User): boolean {
-    if (!user) {
-      return false;
-    }
-
     if (isEmptyObject(user)) {
       return false;
     }
-    
-    // TODO: validate if object has undefined fields
 
+    if (objectHasUndefinedField(user)) {
+      return false;
+    }
+    
     return true;
   }
 }
