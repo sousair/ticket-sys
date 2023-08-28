@@ -19,6 +19,16 @@ describe('User Entity', () => {
       expect(result).toStrictEqual(false);
     });
 
+    describe('should return false for an PostalCode with an undefined field', () => {
+      for (const key in validUserData) {
+        it(`#${key}`, () => {
+          const result = User.validate({ ...validUserData, [key]: undefined });
+
+          expect(result).toBeFalsy();
+        });
+      }
+    });
+
     it('should return true for a valid User', () => {
       const result = User.validate(validUserData);
 
